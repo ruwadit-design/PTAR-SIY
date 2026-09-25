@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PTAR SIY - Menú de Trabajo</title>
+    <meta name="theme-color" content="#0f3460">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PTAR SIY">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding-bottom: 80px;
+        }
+
+        /* HEADER */
+        .header {
+            background: #ffffff;
+            padding: 12px 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .header-logo-svg {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+        }
+
+        .header-subtitle {
+            font-size: 0.62em;
+            color: #1a7a5a;
+            margin-top: 4px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* CLOCK */
+        .clock-container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            margin: 15px;
+            padding: 12px 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .clock-time {
+            font-size: 2em;
+            font-weight: 700;
+            color: #4ade80;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+        }
+
+        .clock-date {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        /* PROCESS CARDS */
+        .process-container {
+            padding: 0 15px;
+        }
+
+        .process-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .process-card:active {
+            transform: scale(0.98);
+        }
+
+        .process-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .process-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .process-info {
+            flex: 1;
+        }
+
+        .process-number {
+            font-size: 0.7em;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .process-title {
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .process-arrow {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .process-card.active .process-arrow {
+            transform: rotate(180deg);
+        }
+
+        .process-card.active {
+            border-color: rgba(74, 222, 128, 0.3);
+            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.1);
+        }
+
+        /* PROCESS CONTENT */
+        .process-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .process-card.active .process-content {
+            max-height: 2000px;
+        }
+
+        .content-inner {
+            padding: 0 15px 15px;
+        }
+
+        .section-title {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 12px 0 8px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title.op {
+            color: #60a5fa;
+            border-color: #60a5fa;
+        }
+
+        .section-title.mant {
+            color: #fbbf24;
+            border-color: #fbbf24;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 6px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .action-btn:active {
+            transform: scale(0.97);
+        }
+
+        .action-btn.op-btn {
+            background: rgba(96, 165, 250, 0.15);
+            color: #93c5fd;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .action-btn.op-btn:active {
+            background: rgba(96, 165, 250, 0.3);
+        }
+
+        .action-btn.mant-btn {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fcd34d;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .action-btn.mant-btn:active {
+            background: rgba(251, 191, 36, 0.3);
+        }
+
+        .action-btn .btn-icon {
+            font-size: 1.1em;
+        }
+
+        .action-btn .btn-text {
+            flex: 1;
+        }
+
+        .action-btn .btn-time {
+            font-size: 0.75em;
+            opacity: 0.7;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* WHATSAPP BUTTON */
+        .whatsapp-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
+        }
+
+        .whatsapp-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* LOG SECTION */
+        .log-container {
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .log-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-entry {
+            background: rgba(255,255,255,0.05);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 0.8em;
+            border-left: 3px solid #4ade80;
+        }
+
+        .log-entry .log-time {
+            color: #4ade80;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .log-entry .log-text {
+            margin-top: 3px;
+            opacity: 0.9;
+        }
+
+        /* COLOR THEMES FOR PROCESSES */
+        .proc-1 .process-icon { background: linear-gradient(135deg, #059669, #10b981); }
+        .proc-2 .process-icon { background: linear-gradient(135deg, #0284c7, #0ea5e9); }
+        .proc-3 .process-icon { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
+        .proc-4 .process-icon { background: linear-gradient(135deg, #d97706, #f59e0b); }
+        .proc-5 .process-icon { background: linear-gradient(135deg, #dc2626, #ef4444); }
+        .proc-6 .process-icon { background: linear-gradient(135deg, #0891b2, #06b6d4); }
+        .proc-7 .process-icon { background: linear-gradient(135deg, #78716c, #a8a29e); }
+        .proc-8 .process-icon { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+
+        /* FLOATING ACTION BUTTON */
+        .fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 200;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal h3 {
+            margin-bottom: 15px;
+            color: #4ade80;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #4ade80;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        /* NOTIFICATION */
+        .notification {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #4ade80;
+            color: #000;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            font-weight: 600;
+            z-index: 400;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+
+        /* STATUS BAR */
+        .status-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 15px;
+            margin: 0 15px 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-number {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .status-label {
+            font-size: 0.65em;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* CLEAR LOG BUTTON */
+        .clear-log-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .clear-log-btn:active {
+            background: rgba(239, 68, 68, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER CON LOGO SIY -->
+    <div class="header">
+        <div class="header-logo-container">
+            <svg class="header-logo-svg" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+                <!-- HOJAS VERDES -->
+                <!-- Hoja grande (izquierda, arriba) -->
+                <path d="M55 15 C30 40, 10 75, 15 110 C20 130, 40 140, 55 130 C45 100, 40 60, 55 15Z" fill="#4a7c3f"/>
+                <!-- Hoja pequeña (derecha, abajo) -->
+                <path d="M55 110 C70 95, 95 90, 115 100 C130 108, 135 120, 125 130 C105 125, 80 120, 55 110Z" fill="#4a7c3f"/>
+                <!-- Nervadura hoja grande -->
+                <path d="M55 20 C50 50, 48 80, 52 115" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Nervadura hoja pequeña -->
+                <path d="M60 112 C75 108, 90 105, 110 103" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+                <!-- LETRAS SIY ESTILO BLOCK/DEPORTIVO -->
+                <!-- Letra S -->
+                <path d="M175 30 L210 30 L210 45 L190 45 L190 55 L210 55 L210 85 L175 85 L175 70 L195 70 L195 65 L175 65 L175 40 L195 40 L195 35 L175 35 Z" 
+                      fill="#ffffff" stroke="#000000" stroke-width="5" stroke-linejoin="round"/>
+                <!-- Letra I -->
+                <path d="M218 30 L248 30 L248 85 L218 85 Z" 
+                      fill="#ffffff" stroke="#000000" stroke-width="5" stroke-linejoin="round"/>
+                <!-- Letra Y -->
+                <path d="M255 30 L275 30 L285 55 L295 30 L315 30 L295 65 L295 85 L275 85 L275 65 Z" 
+                      fill="#ffffff" stroke="#000000" stroke-width="5" stroke-linejoin="round"/>
+
+                <!-- TRES LÍNEAS HORIZONTALES -->
+                <line x1="165" y1="105" x2="325" y2="105" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+                <line x1="165" y1="120" x2="325" y2="120" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+                <line x1="165" y1="135" x2="325" y2="135" stroke="#4a7c3f" stroke-width="7" stroke-linecap="round"/>
+
+                <!-- TEXTO SOLUCIONES INTEGRALES YERUKIM -->
+                <text x="345" y="55" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="#000000" letter-spacing="3">SOLUCIONES</text>
+                <text x="345" y="95" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="#000000" letter-spacing="3">INTEGRALES</text>
+                <text x="345" y="140" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="#000000" letter-spacing="3">YERUKIM</text>
+            </svg>
+        </div>
+        <div class="header-subtitle">🌊 Planta de Tratamiento de Aguas Residuales</div>
+    </div>
+
+    <!-- CLOCK -->
+    <div class="clock-container">
+        <div class="clock-time" id="clock">00:00:00</div>
+        <div class="clock-date" id="dateDisplay">Cargando fecha...</div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+        <div class="status-item">
+            <div class="status-number" id="totalActions">0</div>
+            <div class="status-label">Acciones Hoy</div>
+        </div>
+        <div class="status-item">
+            <div class="status-number" id="totalOps">0</div>
+            <div class="status-label">Operaciones</div>
+        </div>
+        <div class="status-item">
+            <div class="status-number" id="totalMant">0</div>
+            <div class="status-label">Mantenimientos</div>
+        </div>
+    </div>
+
+    <!-- PROCESS CONTAINER -->
+    <div class="process-container" id="processContainer">
+        <!-- Processes will be generated by JavaScript -->
+    </div>
+
+    <!-- LOG -->
+    <div class="log-container">
+        <div class="log-title">📋 Registro de Actividades</div>
+        <div id="logEntries"></div>
+        <button class="clear-log-btn" onclick="clearLog()">🗑️ Limpiar Registro</button>
+    </div>
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <div class="fab-container">
+        <button class="fab" onclick="sendAllWhatsApp()" title="Enviar todo por WhatsApp">
+            <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification"></div>
+
+    <!-- MODAL FOR WHATSAPP GROUP -->
+    <div class="modal-overlay" id="whatsappModal">
+        <div class="modal">
+            <h3> Enviar por WhatsApp</h3>
+            <p style="font-size:0.85em; opacity:0.8; margin-bottom:15px;">Ingresa el número del grupo o contacto (con código de país, ej: 521234567890)</p>
+            <input type="text" class="modal-input" id="whatsappNumber" placeholder="521234567890" value="">
+            <textarea class="modal-input" id="whatsappMessage" rows="6" placeholder="Mensaje..." style="resize:vertical;"></textarea>
+            <button class="modal-btn primary" onclick="confirmWhatsApp()">📤 Enviar Mensaje</button>
+            <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // DATA
+        const processes = [
+            {
+                id: 1,
+                number: "Proceso 1",
+                title: "BioAmp al Depósito 1",
+                icon: "🦠",
+                operations: [
+                    "Automatizada"
+                ],
+                maintenance: [
+                    "Mantenimiento de BioAmp",
+                    "Llenado de bacterias",
+                    "Corrección puesto en error BioAmp",
+                    "Limpieza de basura depósito 🛅"
+                ]
+            },
+            {
+                id: 2,
+                number: "Proceso 2",
+                title: "Depósito 1 - Separador - Depósito 2",
+                icon: "⚙️",
+                operations: [
+                    "Transferencia de aguas del depósito 1 al depósito 2",
+                    "Transferencia de aguas del depósito 2 al proceso 3 (Sedimentadores)"
+                ],
+                maintenance: [
+                    "Limpieza de trampa de sólidos",
+                    "Limpieza de lodo del separador",
+                    "Limpieza de lodo del depósito 2"
+                ]
+            },
+            {
+                id: 3,
+                number: "Proceso 3",
+                title: "Sedimentadores",
+                icon: "🔽",
+                operations: [
+                    "Transferencia de aguas de sedimentadores al depósito 3"
+                ],
+                maintenance: [
+                    "Drenado de lodos (Sedimentadores)"
+                ]
+            },
+            {
+                id: 4,
+                number: "Proceso 4",
+                title: "Filtración Primaria (arena, cartucho, cloración) → Depósito 3",
+                icon: "🔬",
+                operations: [],
+                maintenance: [
+                    "Mantenimiento de filtros de arena (retrolavado)",
+                    "Cambio de arena a filtros",
+                    "Limpieza / cambio de filtros de membrana",
+                    "Recarga de pastillas de cloro",
+                    "Limpieza de piso área de filtros",
+                    "Limpieza de filtro de bomba",
+                    "Mantenimiento del depósito 3"
+                ]
+            },
+            {
+                id: 5,
+                number: "Proceso 5",
+                title: "Filtración Secundaria (Zeolita, carbón, lámpara UV)",
+                icon: "💡",
+                operations: [
+                    "Transferencia de aguas del depósito 3 al proceso 6"
+                ],
+                maintenance: [
+                    "Mantenimiento de filtros (retrolavado)",
+                    "Limpieza / cambio de filtros de membrana",
+                    "Limpieza de Pichincha",
+                    "Limpieza de filtro de bomba",
+                    "Sustitución de lámpara UV"
+                ]
+            },
+            {
+                id: 6,
+                number: "Proceso 6",
+                title: "Disposición Final (riego, pileta, uso interno)",
+                icon: "",
+                operations: [
+                    "Llenado de tanque blanco para uso interno en PTAR"
+                ],
+                maintenance: [
+                    "Limpieza de hojas y algas",
+                    "Limpieza de lodos del fondo de la alberca",
+                    "Limpieza del tanque blanco"
+                ]
+            },
+            {
+                id: 7,
+                number: "Proceso 7",
+                title: "Lodos al Lecho de Secado",
+                icon: "️",
+                operations: [],
+                maintenance: [
+                    "Limpieza del depósito de lodos"
+                ]
+            },
+            {
+                id: 8,
+                number: "Actividades Complementarias",
+                title: "Mantenimiento General",
+                icon: "🧹",
+                operations: [],
+                maintenance: [
+                    "Mantenimiento de áreas verdes internas y externas",
+                    "Sacado de basura",
+                    "Limpieza de baño",
+                    "Limpieza de bodega",
+                    "Limpieza de bodeguita",
+                    "Limpieza de tinaco"
+                ]
+            }
+        ];
+
+        let activityLog = [];
+        let opCount = 0;
+        let mantCount = 0;
+
+        // CLOCK
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('es-MX', options);
+            document.getElementById('dateDisplay').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // RENDER PROCESSES
+        function renderProcesses() {
+            const container = document.getElementById('processContainer');
+            container.innerHTML = '';
+
+            processes.forEach(proc => {
+                const card = document.createElement('div');
+                card.className = `process-card proc-${proc.id}`;
+                card.id = `proc-${proc.id}`;
+
+                let html = `
+                    <div class="process-header" onclick="toggleProcess(${proc.id})">
+                        <div class="process-icon">${proc.icon}</div>
+                        <div class="process-info">
+                            <div class="process-number">${proc.number}</div>
+                            <div class="process-title">${proc.title}</div>
+                        </div>
+                        <div class="process-arrow">▼</div>
+                    </div>
+                    <div class="process-content">
+                        <div class="content-inner">
+                `;
+
+                if (proc.operations.length > 0) {
+                    html += `<div class="section-title op">⚡ Operación</div>`;
+                    proc.operations.forEach((op, idx) => {
+                        html += `
+                            <button class="action-btn op-btn" onclick="registerAction(${proc.id}, 'Operación', '${op.replace(/'/g, "\\'")}', this)">
+                                <span class="btn-icon">▶️</span>
+                                <span class="btn-text">${op}</span>
+                                <span class="btn-time" id="time-${proc.id}-op-${idx}">--:--</span>
+                            </button>
+                        `;
+                    });
+                }
+
+                if (proc.maintenance.length > 0) {
+                    html += `<div class="section-title mant"> Mantenimiento</div>`;
+                    proc.maintenance.forEach((mant, idx) => {
+                        html += `
+                            <button class="action-btn mant-btn" onclick="registerAction(${proc.id}, 'Mantenimiento', '${mant.replace(/'/g, "\\'")}', this)">
+                                <span class="btn-icon">🔧</span>
+                                <span class="btn-text">${mant}</span>
+                                <span class="btn-time" id="time-${proc.id}-mant-${idx}">--:--</span>
+                            </button>
+                        `;
+                    });
+                }
+
+                html += `
+                            <button class="whatsapp-btn" onclick="sendProcessWhatsApp(${proc.id})">
+                                <svg viewBox="0 0 24 24" fill="white" width="22" height="22">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                </svg>
+                                Enviar Proceso ${proc.id} por WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        // TOGGLE PROCESS
+        function toggleProcess(id) {
+            const card = document.getElementById(`proc-${id}`);
+            card.classList.toggle('active');
+        }
+
+        // REGISTER ACTION
+        function registerAction(procId, type, action, btnElement) {
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+            const dateStr = now.toLocaleDateString('es-MX');
+
+            // Update button time
+            const timeElements = btnElement.querySelectorAll('.btn-time');
+            timeElements.forEach(el => el.textContent = timeStr);
+
+            // Add to log
+            const proc = processes.find(p => p.id === procId);
+            const entry = {
+                time: timeStr,
+                date: dateStr,
+                process: proc.number,
+                type: type,
+                action: action
+            };
+            activityLog.push(entry);
+
+            // Update counters
+            if (type === 'Operación') opCount++;
+            else mantCount++;
+
+            updateStats();
+            renderLog();
+            showNotification(`✅ ${type} registrada: ${timeStr}`);
+
+            // Visual feedback
+            btnElement.style.background = type === 'Operación' ? 'rgba(96, 165, 250, 0.4)' : 'rgba(251, 191, 36, 0.4)';
+            setTimeout(() => {
+                btnElement.style.background = '';
+            }, 1500);
+        }
+
+        // UPDATE STATS
+        function updateStats() {
+            document.getElementById('totalActions').textContent = activityLog.length;
+            document.getElementById('totalOps').textContent = opCount;
+            document.getElementById('totalMant').textContent = mantCount;
+        }
+
+        // RENDER LOG
+        function renderLog() {
+            const container = document.getElementById('logEntries');
+            container.innerHTML = '';
+
+            const reversedLog = [...activityLog].reverse();
+            reversedLog.forEach(entry => {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerHTML = `
+                    <div class="log-time">🕐 ${entry.time} - ${entry.date}</div>
+                    <div class="log-text"><strong>${entry.process}</strong> | ${entry.type}: ${entry.action}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // CLEAR LOG
+        function clearLog() {
+            if (confirm('¿Estás seguro de limpiar el registro?')) {
+                activityLog = [];
+                opCount = 0;
+                mantCount = 0;
+                updateStats();
+                renderLog();
+                showNotification('🗑️ Registro limpiado');
+            }
+        }
+
+        // SEND PROCESS WHATSAPP
+        function sendProcessWhatsApp(procId) {
+            const proc = processes.find(p => p.id === procId);
+            const procActions = activityLog.filter(a => a.process === proc.number);
+
+            let message = `🌊 *PTAR SIY - YERUKIM*\n`;
+            message += `📋 *${proc.number}: ${proc.title}*\n`;
+            message += ` ${new Date().toLocaleDateString('es-MX')}\n\n`;
+
+            if (procActions.length === 0) {
+                message += `️ Sin actividades registradas para este proceso.`;
+            } else {
+                procActions.forEach((action, idx) => {
+                    const icon = action.type === 'Operación' ? '⚡' : '🔧';
+                    message += `${icon} [${action.time}] ${action.action}\n`;
+                });
+            }
+
+            message += `\n Total acciones: ${procActions.length}`;
+
+            document.getElementById('whatsappMessage').value = message;
+            document.getElementById('whatsappModal').classList.add('active');
+        }
+
+        // SEND ALL WHATSAPP
+        function sendAllWhatsApp() {
+            let message = `🌊 *PTAR SIY - YERUKIM*\n`;
+            message += `📋 *REPORTE DE ACTIVIDADES*\n`;
+            message += `📅 ${new Date().toLocaleDateString('es-MX')}\n`;
+            message += `🕐 ${new Date().toLocaleTimeString('es-MX')}\n\n`;
+
+            if (activityLog.length === 0) {
+                message += `⚠️ Sin actividades registradas hoy.`;
+            } else {
+                processes.forEach(proc => {
+                    const procActions = activityLog.filter(a => a.process === proc.number);
+                    if (procActions.length > 0) {
+                        message += `━━━ *${proc.number}: ${proc.title}* ━━━\n`;
+                        procActions.forEach(action => {
+                            const icon = action.type === 'Operación' ? '⚡' : '🔧';
+                            message += `${icon} [${action.time}] ${action.action}\n`;
+                        });
+                        message += `\n`;
+                    }
+                });
+            }
+
+            message += `📊 *Resumen:*\n`;
+            message += `✅ Total acciones: ${activityLog.length}\n`;
+            message += `⚡ Operaciones: ${opCount}\n`;
+            message += `🔧 Mantenimientos: ${mantCount}`;
+
+            document.getElementById('whatsappMessage').value = message;
+            document.getElementById('whatsappModal').classList.add('active');
+        }
+
+        // CONFIRM WHATSAPP
+        function confirmWhatsApp() {
+            const number = document.getElementById('whatsappNumber').value.trim();
+            const message = document.getElementById('whatsappMessage').value;
+
+            if (!message) {
+                showNotification('⚠️ No hay mensaje para enviar');
+                return;
+            }
+
+            const encodedMessage = encodeURIComponent(message);
+            let url;
+
+            if (number) {
+                url = `https://wa.me/${number}?text=${encodedMessage}`;
+            } else {
+                url = `https://wa.me/?text=${encodedMessage}`;
+            }
+
+            window.open(url, '_blank');
+            closeModal();
+            showNotification('📤 Abriendo WhatsApp...');
+        }
+
+        // CLOSE MODAL
+        function closeModal() {
+            document.getElementById('whatsappModal').classList.remove('active');
+        }
+
+        // NOTIFICATION
+        function showNotification(text) {
+            const notif = document.getElementById('notification');
+            notif.textContent = text;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 2500);
+        }
+
+        // CLOSE MODAL ON OUTSIDE CLICK
+        document.getElementById('whatsappModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // INITIALIZE
+        renderProcesses();
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .catch(err => console.warn('Service Worker:', err));
+            });
+        }
+    </script>
+
+</body>
+</html>
