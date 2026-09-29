@@ -3,7 +3,7 @@
   "short_name": "PTAR SIY",
   "description": "Gestión de operación y mantenimiento de la Planta de Tratamiento de Aguas Residuales.",
   "lang": "es-MX",
-  "start_url": "./SIY_PTAR.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

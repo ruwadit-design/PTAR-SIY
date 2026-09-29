@@ -1,16 +1,19 @@
-PTAR SIY - PWA
+PTAR SIY — Paquete corregido para GitHub Pages
+
+SUBE TODOS LOS ARCHIVOS DE ESTE ZIP A LA RAÍZ DEL REPOSITORIO PTAR-SIY.
 
 Archivos:
-- SIY_PTAR.html: aplicación principal.
-- manifest.webmanifest: configuración de instalación.
-- service-worker.js: caché y funcionamiento offline.
-- icon.svg, icon-192.png, icon-512.png: iconos.
+- index.html              (entrada principal)
+- SIY_PTAR.html           (copia original)
+- manifest.webmanifest
+- service-worker.js
+- icon.svg
+- icon-192.png
+- icon-512.png
+- README.txt
 
-INSTALACIÓN:
-1. Sube TODOS estos archivos a una carpeta de un sitio HTTPS.
-2. Abre la dirección de SIY_PTAR.html desde Chrome (Android) o Safari (iPhone).
-3. Android: menú ⋮ > "Agregar a pantalla principal" o "Instalar aplicación".
-4. iPhone: Compartir > "Agregar a pantalla de inicio".
+Después de publicar:
+https://ruwadit-design.github.io/PTAR-SIY/
 
-IMPORTANTE:
-La instalación PWA requiere HTTPS (excepto entornos locales de desarrollo).
+En Android, abre esa dirección en Chrome y usa ⋮ > Instalar aplicación
+o Agregar a pantalla principal, según la opción que muestre Chrome.

@@ -1,3 +1,4 @@
+/* GitHub Pages root entry point: index.html */
 const CACHE_NAME = 'ptar-siy-v1';
 const ASSETS = [
   './',
