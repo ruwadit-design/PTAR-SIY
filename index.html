@@ -1,923 +1,676 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PTAR SIY - Menú de Trabajo</title>
-    <meta name="theme-color" content="#0f3460">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="PTAR SIY">
-    <link rel="manifest" href="manifest.webmanifest">
-    <link rel="icon" type="image/svg+xml" href="icon.svg">
-    <link rel="apple-touch-icon" href="apple-touch-icon-180.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PTAR SIY">
+<meta name="theme-color" content="#1a1a2e">
+<title>PTAR SIY - Sistema Integral</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%234a7c3f'/%3E%3Ctext x='90' y='115' font-family='Arial' font-size='70' font-weight='bold' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+html,body{-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;min-height:-webkit-fill-available;color:#fff;padding-bottom:calc(80px + env(safe-area-inset-bottom));overscroll-behavior-y:contain}
+.header{background:#ffffff;padding:calc(10px + env(safe-area-inset-top)) 10px 10px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.3);position:sticky;top:0;z-index:100}
+.header-logo-svg{width:100%;max-width:420px;height:auto}
+.header-subtitle{font-size:0.62em;color:#1a7a5a;margin-top:4px;letter-spacing:1.5px;font-weight:600;text-transform:uppercase}
+.clock-container{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin:15px;padding:12px 20px;border-radius:15px;text-align:center;border:1px solid rgba(255,255,255,0.15)}
+.clock-time{font-size:1.8em;font-weight:700;color:#4ade80;font-family:'Courier New',monospace}
+.clock-date{font-size:0.8em;opacity:0.8;margin-top:3px}
+.tab-nav{display:flex;overflow-x:auto;padding:0 10px;gap:8px;margin-bottom:15px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.72em;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.3s;-webkit-appearance:none;appearance:none;font-family:inherit}
+.tab-btn.active{background:linear-gradient(135deg,#4ade80,#22c55e);color:#000;border-color:#4ade80;box-shadow:0 4px 15px rgba(74,222,128,0.3)}
+.tab-btn .tab-icon{font-size:1.2em}
+.module{display:none;padding:0 15px}
+.module.active{display:block}
+.card{background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.1);overflow:hidden}
+.card-header{padding:15px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.card-icon{width:45px;height:45px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4em;flex-shrink:0}
+.card-info{flex:1}
+.card-number{font-size:0.7em;opacity:0.7;text-transform:uppercase;letter-spacing:1px}
+.card-title{font-size:0.9em;font-weight:600;margin-top:2px}
+.card-arrow{font-size:1.2em;transition:transform 0.3s;opacity:0.6}
+.card.active .card-arrow{transform:rotate(180deg)}
+.card.active{border-color:rgba(74,222,128,0.3);box-shadow:0 4px 20px rgba(74,222,128,0.1)}
+.card-content{max-height:0;overflow:hidden;transition:max-height 0.4s}
+.card.active .card-content{max-height:3000px}
+.card-inner{padding:0 15px 15px}
+.form-group{margin-bottom:12px}
+.form-label{display:block;font-size:0.8em;opacity:0.9;margin-bottom:6px;font-weight:500}
+.form-input,.form-select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;-webkit-appearance:none;appearance:none;font-family:inherit}
+.form-input:focus,.form-select:focus{outline:none;border-color:#4ade80}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:0.9em;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;-webkit-appearance:none;appearance:none;font-family:inherit;margin-top:8px}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:linear-gradient(135deg,#4ade80,#22c55e);color:#000;box-shadow:0 4px 15px rgba(74,222,128,0.3)}
+.btn-secondary{background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#fff;box-shadow:0 4px 15px rgba(96,165,250,0.3)}
+.btn-warning{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000;box-shadow:0 4px 15px rgba(251,191,36,0.3)}
+.btn-danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 4px 15px rgba(239,68,68,0.3)}
+.btn-whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 4px 15px rgba(37,211,102,0.3)}
+.alert{padding:12px;border-radius:10px;margin:10px 0;font-size:0.85em;display:flex;align-items:center;gap:10px}
+.alert-success{background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80}
+.alert-warning{background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24}
+.alert-danger{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ef4444}
+.alert-info{background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.3);color:#60a5fa}
+.shelly-device{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:15px;margin:10px 0;transition:all 0.3s}
+.shelly-device.online{border-color:rgba(74,222,128,0.3)}
+.shelly-device.offline{border-color:rgba(239,68,68,0.3);opacity:0.7}
+.shelly-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.shelly-name{font-size:1em;font-weight:600}
+.shelly-ip{font-size:0.75em;opacity:0.7;font-family:'Courier New',monospace}
+.shelly-status{display:flex;align-items:center;gap:6px;font-size:0.8em}
+.shelly-status-dot{width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
+.shelly-status-dot.off{background:#ef4444;box-shadow:0 0 8px #ef4444}
+.shelly-status-dot.loading{background:#fbbf24;box-shadow:0 0 8px #fbbf24;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.shelly-relays{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:10px}
+.shelly-relay{background:rgba(0,0,0,0.2);border-radius:10px;padding:12px;text-align:center;border:2px solid transparent;transition:all 0.3s}
+.shelly-relay.on{border-color:#4ade80;background:rgba(74,222,128,0.1)}
+.shelly-relay.off{border-color:rgba(255,255,255,0.1)}
+.shelly-relay-name{font-size:0.75em;opacity:0.8;margin-bottom:8px}
+.shelly-toggle{width:60px;height:32px;border-radius:16px;border:none;cursor:pointer;position:relative;transition:all 0.3s;-webkit-appearance:none;appearance:none}
+.shelly-toggle.on{background:linear-gradient(135deg,#4ade80,#22c55e)}
+.shelly-toggle.off{background:rgba(255,255,255,0.2)}
+.shelly-toggle::after{content:'';position:absolute;width:26px;height:26px;border-radius:50%;background:#fff;top:3px;transition:all 0.3s;box-shadow:0 2px 5px rgba(0,0,0,0.3)}
+.shelly-toggle.on::after{left:31px}
+.shelly-toggle.off::after{left:3px}
+.shelly-power{font-size:0.7em;opacity:0.7;margin-top:6px}
+.shelly-actions{display:flex;gap:6px;margin-top:10px}
+.shelly-actions button{flex:1;padding:8px;font-size:0.75em;border-radius:8px;border:none;cursor:pointer;font-family:inherit}
+.shelly-btn-refresh{background:rgba(96,165,250,0.2);color:#60a5fa}
+.shelly-btn-delete{background:rgba(239,68,68,0.2);color:#ef4444}
+.shelly-add-form{background:rgba(74,222,128,0.05);border:1px dashed rgba(74,222,128,0.3);border-radius:12px;padding:15px;margin:10px 0}
+.scene-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}
+.scene-btn{padding:15px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:0.85em;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.scene-btn:active{transform:scale(0.95)}
+.scene-btn.on-all{background:linear-gradient(135deg,#4ade80,#22c55e);color:#000}
+.scene-btn.off-all{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+.scene-btn.schedule{background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#fff}
+.scene-btn .scene-icon{font-size:1.5em}
+.section-title{font-size:0.8em;text-transform:uppercase;letter-spacing:1.5px;margin:12px 0 8px;padding-bottom:5px;border-bottom:2px solid;display:flex;align-items:center;gap:8px}
+.section-title.op{color:#60a5fa;border-color:#60a5fa}
+.section-title.mant{color:#fbbf24;border-color:#fbbf24}
+.section-title.info{color:#4ade80;border-color:#4ade80}
+.process-item{width:100%;padding:12px;margin:6px 0;border-radius:10px;font-size:0.85em;cursor:pointer;display:flex;align-items:center;gap:10px;-webkit-appearance:none;appearance:none;font-family:inherit;border:1px solid}
+.process-item:active{transform:scale(0.98)}
+.process-item.op{background:rgba(96,165,250,0.15);color:#93c5fd;border-color:rgba(96,165,250,0.3)}
+.process-item.mant{background:rgba(251,191,36,0.15);color:#fcd34d;border-color:rgba(251,191,36,0.3)}
+.process-item .p-icon{font-size:1.1em}
+.process-item .p-text{flex:1}
+.process-item .p-time{font-size:0.75em;opacity:0.7;font-family:'Courier New',monospace}
+.insumo-item{width:100%;padding:12px;margin:6px 0;border:1px solid rgba(251,191,36,0.2);border-radius:10px;background:rgba(251,191,36,0.08);color:#fcd34d;font-size:0.82em;cursor:pointer;display:flex;align-items:center;gap:10px;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
+.insumo-item.selected{background:rgba(251,191,36,0.25);border-color:rgba(251,191,36,0.6)}
+.insumo-checkbox{width:22px;height:22px;border-radius:6px;border:2px solid rgba(251,191,36,0.5);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.insumo-item.selected .insumo-checkbox{background:#fbbf24;border-color:#fbbf24;color:#000}
+.insumo-text{flex:1;line-height:1.3}
+.insumo-note{display:block;font-size:0.85em;opacity:0.7;margin-top:2px;font-style:italic}
+.log-entry{background:rgba(255,255,255,0.05);padding:10px 12px;border-radius:8px;margin-bottom:6px;font-size:0.8em;border-left:3px solid #4ade80}
+.log-time{color:#4ade80;font-family:'Courier New',monospace;font-size:0.9em}
+.log-text{margin-top:3px;opacity:0.9}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:300;align-items:center;justify-content:center;padding:20px;padding-top:calc(20px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.modal-overlay.active{display:flex}
+.modal{background:#1e293b;border-radius:20px;padding:25px;width:100%;max-width:400px;max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid rgba(255,255,255,0.1)}
+.modal h3{margin-bottom:15px;color:#4ade80}
+.notification{position:fixed;top:calc(80px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) translateY(-100px);background:#4ade80;color:#000;padding:12px 20px;border-radius:10px;font-size:0.85em;font-weight:600;z-index:400;transition:transform 0.3s;box-shadow:0 4px 15px rgba(74,222,128,0.3);max-width:90%;text-align:center}
+.notification.show{transform:translateX(-50%) translateY(0)}
+.fab-container{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));right:20px;z-index:200}
+.fab{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);border:none;color:#fff;font-size:1.5em;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,0.4);display:flex;align-items:center;justify-content:center;-webkit-appearance:none;appearance:none}
+.fab:active{transform:scale(0.9)}
+::-webkit-scrollbar{width:0;background:transparent}
+.section-divider{text-align:center;padding:15px 0 5px;font-size:0.75em;opacity:0.5;letter-spacing:3px;text-transform:uppercase}
+</style>
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: calc(80px + env(safe-area-inset-bottom));
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: #fff;
-            padding-bottom: 80px;
-        }
-        .header {
-            background: #ffffff;
-            padding: 12px 10px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            max-width: 100%;
-            overflow: hidden;
-        }
-        .header-logo-svg { width: 100%; max-width: 420px; height: auto; }
-        .header-subtitle {
-            font-size: 0.62em;
-            color: #1a7a5a;
-            margin-top: 4px;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .clock-container {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            margin: 15px;
-            padding: 12px 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-        .clock-time {
-            font-size: 2em;
-            font-weight: 700;
-            color: #4ade80;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
-        }
-        .clock-date { font-size: 0.85em; opacity: 0.8; margin-top: 3px; }
-        .process-container { padding: 0 15px; }
-        .process-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .process-card:active { transform: scale(0.98); }
-        .process-header {
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            user-select: none;
-        }
-        .process-icon {
-            width: 50px; height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            flex-shrink: 0;
-        }
-        .process-info { flex: 1; }
-        .process-number { font-size: 0.7em; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
-        .process-title { font-size: 0.95em; font-weight: 600; margin-top: 2px; }
-        .process-arrow { font-size: 1.2em; transition: transform 0.3s ease; opacity: 0.6; }
-        .process-card.active .process-arrow { transform: rotate(180deg); }
-        .process-card.active {
-            border-color: rgba(74, 222, 128, 0.3);
-            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.1);
-        }
-        .process-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-        .process-card.active .process-content { max-height: 2000px; }
-        .content-inner { padding: 0 15px 15px; }
-        .section-title {
-            font-size: 0.8em;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 12px 0 8px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .section-title.op { color: #60a5fa; border-color: #60a5fa; }
-        .section-title.mant { color: #fbbf24; border-color: #fbbf24; }
-        .action-btn {
-            width: 100%;
-            padding: 12px 15px;
-            margin: 6px 0;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.85em;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            text-align: left;
-        }
-        .action-btn:active { transform: scale(0.97); }
-        .action-btn.op-btn {
-            background: rgba(96, 165, 250, 0.15);
-            color: #93c5fd;
-            border: 1px solid rgba(96, 165, 250, 0.3);
-        }
-        .action-btn.op-btn:active { background: rgba(96, 165, 250, 0.3); }
-        .action-btn.mant-btn {
-            background: rgba(251, 191, 36, 0.15);
-            color: #fcd34d;
-            border: 1px solid rgba(251, 191, 36, 0.3);
-        }
-        .action-btn.mant-btn:active { background: rgba(251, 191, 36, 0.3); }
-        .action-btn .btn-icon { font-size: 1.1em; }
-        .action-btn .btn-text { flex: 1; }
-        .action-btn .btn-time { font-size: 0.75em; opacity: 0.7; font-family: 'Courier New', monospace; }
-        .whatsapp-btn {
-            width: 100%;
-            padding: 14px;
-            margin-top: 10px;
-            background: linear-gradient(135deg, #25d366, #128c7e);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.9em;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
-        .whatsapp-btn:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2); }
-        .whatsapp-btn svg { width: 22px; height: 22px; }
-        .log-container { padding: 15px; margin-top: 10px; }
-        .log-title { font-size: 1em; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .log-entry {
-            background: rgba(255,255,255,0.05);
-            padding: 10px 12px;
-            border-radius: 8px;
-            margin-bottom: 6px;
-            font-size: 0.8em;
-            border-left: 3px solid #4ade80;
-        }
-        .log-entry .log-time { color: #4ade80; font-family: 'Courier New', monospace; font-size: 0.9em; }
-        .log-entry .log-text { margin-top: 3px; opacity: 0.9; }
-        .proc-1 .process-icon { background: linear-gradient(135deg, #059669, #10b981); }
-        .proc-2 .process-icon { background: linear-gradient(135deg, #0284c7, #0ea5e9); }
-        .proc-3 .process-icon { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
-        .proc-4 .process-icon { background: linear-gradient(135deg, #d97706, #f59e0b); }
-        .proc-5 .process-icon { background: linear-gradient(135deg, #dc2626, #ef4444); }
-        .proc-6 .process-icon { background: linear-gradient(135deg, #0891b2, #06b6d4); }
-        .proc-7 .process-icon { background: linear-gradient(135deg, #78716c, #a8a29e); }
-        .proc-8 .process-icon { background: linear-gradient(135deg, #4f46e5, #6366f1); }
-        .special-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .special-card.active {
-            border-color: rgba(74, 222, 128, 0.3);
-            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.1);
-        }
-        .special-header {
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            user-select: none;
-        }
-        .special-icon {
-            width: 50px; height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            flex-shrink: 0;
-        }
-        .special-info { flex: 1; }
-        .special-number { font-size: 0.7em; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
-        .special-title { font-size: 0.95em; font-weight: 600; margin-top: 2px; }
-        .special-arrow { font-size: 1.2em; transition: transform 0.3s ease; opacity: 0.6; }
-        .special-card.active .special-arrow { transform: rotate(180deg); }
-        .special-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-        .special-card.active .special-content { max-height: 3000px; }
-        .special-content-inner { padding: 0 15px 15px; }
-        .finaliza-card .special-icon { background: linear-gradient(135deg, #dc2626, #ef4444); }
-        .finaliza-card .section-title.finish { color: #f87171; border-color: #f87171; }
-        .finish-summary {
-            background: rgba(248, 113, 113, 0.1);
-            border: 1px solid rgba(248, 113, 113, 0.3);
-            border-radius: 10px;
-            padding: 12px;
-            margin: 10px 0;
-        }
-        .finish-summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-size: 0.85em;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .finish-summary-item:last-child { border-bottom: none; font-weight: 700; font-size: 1em; color: #f87171; }
-        .finish-btn {
-            width: 100%;
-            padding: 16px;
-            margin-top: 10px;
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .finish-btn:active { transform: scale(0.97); }
-        .insumos-card .special-icon { background: linear-gradient(135deg, #d97706, #f59e0b); }
-        .insumo-item {
-            width: 100%;
-            padding: 12px 15px;
-            margin: 6px 0;
-            border: 1px solid rgba(251, 191, 36, 0.2);
-            border-radius: 10px;
-            background: rgba(251, 191, 36, 0.08);
-            color: #fcd34d;
-            font-size: 0.82em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-            text-align: left;
-        }
-        .insumo-item:active { transform: scale(0.98); }
-        .insumo-item.selected {
-            background: rgba(251, 191, 36, 0.25);
-            border-color: rgba(251, 191, 36, 0.6);
-            box-shadow: 0 2px 10px rgba(251, 191, 36, 0.15);
-        }
-        .insumo-checkbox {
-            width: 22px; height: 22px;
-            border-radius: 6px;
-            border: 2px solid rgba(251, 191, 36, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 0.9em;
-            transition: all 0.2s ease;
-        }
-        .insumo-item.selected .insumo-checkbox {
-            background: #fbbf24;
-            border-color: #fbbf24;
-            color: #000;
-        }
-        .insumo-text { flex: 1; line-height: 1.3; }
-        .insumo-note { display: block; font-size: 0.85em; opacity: 0.7; margin-top: 2px; font-style: italic; }
-        .insumos-counter {
-            text-align: center;
-            padding: 10px;
-            margin: 10px 0;
-            background: rgba(251, 191, 36, 0.1);
-            border-radius: 10px;
-            font-size: 0.9em;
-            color: #fcd34d;
-            border: 1px solid rgba(251, 191, 36, 0.2);
-        }
-        .insumos-counter strong { color: #fbbf24; font-size: 1.2em; }
-        .select-all-btn {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            background: rgba(251, 191, 36, 0.15);
-            color: #fcd34d;
-            border: 1px dashed rgba(251, 191, 36, 0.4);
-            border-radius: 10px;
-            font-size: 0.82em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .select-all-btn:active { background: rgba(251, 191, 36, 0.3); }
-        .fab-container { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); right: 20px; z-index: 200; }
-        .fab {
-            width: 56px; height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #25d366, #128c7e);
-            border: none;
-            color: white;
-            font-size: 1.5em;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        .fab:active { transform: scale(0.9); }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 300;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            background: #1e293b;
-            border-radius: 20px;
-            padding: 25px;
-            width: 100%;
-            max-width: 400px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .modal h3 { margin-bottom: 15px; color: #4ade80; }
-        .modal-input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-        .modal-input:focus { outline: none; border-color: #4ade80; }
-        .modal-btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-size: 0.9em;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-        .modal-btn.primary { background: linear-gradient(135deg, #25d366, #128c7e); color: white; }
-        .modal-btn.secondary { background: rgba(255,255,255,0.1); color: white; }
-        .notification {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: #4ade80;
-            color: #000;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 0.85em;
-            font-weight: 600;
-            z-index: 400;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
-        }
-        .notification.show { transform: translateX(-50%) translateY(0); }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
-        .status-bar {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 15px;
-            margin: 0 15px 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        .status-item { text-align: center; }
-        .status-number { font-size: 1.3em; font-weight: 700; color: #4ade80; }
-        .status-label { font-size: 0.65em; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
-        .clear-log-btn {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 0.75em;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .clear-log-btn:active { background: rgba(239, 68, 68, 0.4); }
-        .section-divider {
-            text-align: center;
-            padding: 15px 0 5px;
-            font-size: 0.75em;
-            opacity: 0.5;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-    </style>
+<meta name="theme-color" content="#0f3460">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PTAR SIY">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon-192.png">
+
 </head>
 <body>
 
-    <div class="header">
-        <div class="header-logo-container">
-            <svg class="header-logo-svg" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
-                <path d="M55 15 C30 40, 10 75, 15 110 C20 130, 40 140, 55 130 C45 100, 40 60, 55 15Z" fill="#4a7c3f"/>
-                <path d="M55 110 C70 95, 95 90, 115 100 C130 108, 135 120, 125 130 C105 125, 80 120, 55 110Z" fill="#4a7c3f"/>
-                <path d="M55 20 C50 50, 48 80, 52 115" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                <path d="M60 112 C75 108, 90 105, 110 103" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M175 30 L210 30 L210 45 L190 45 L190 55 L210 55 L210 85 L175 85 L175 70 L195 70 L195 65 L175 65 L175 40 L195 40 L195 35 L175 35 Z" fill="#ffffff" stroke="#000000" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M218 30 L248 30 L248 85 L218 85 Z" fill="#ffffff" stroke="#000000" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M255 30 L275 30 L285 55 L295 30 L315 30 L295 65 L295 85 L275 85 L275 65 Z" fill="#ffffff" stroke="#000000" stroke-width="5" stroke-linejoin="round"/>
-                <line x1="165" y1="105" x2="325" y2="105" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
-                <line x1="165" y1="120" x2="325" y2="120" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
-                <line x1="165" y1="135" x2="325" y2="135" stroke="#4a7c3f" stroke-width="7" stroke-linecap="round"/>
-                <text x="345" y="55" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="#000000" letter-spacing="3">SOLUCIONES</text>
-                <text x="345" y="95" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="#000000" letter-spacing="3">INTEGRALES</text>
-                <text x="345" y="140" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="#000000" letter-spacing="3">YERUKIM</text>
-            </svg>
-        </div>
-        <div class="header-subtitle">🌊 Planta de Tratamiento de Aguas Residuales</div>
-    </div>
+<div class="header">
+<svg class="header-logo-svg" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+<path d="M55 15 C30 40, 10 75, 15 110 C20 130, 40 140, 55 130 C45 100, 40 60, 55 15Z" fill="#4a7c3f"/>
+<path d="M55 110 C70 95, 95 90, 115 100 C130 108, 135 120, 125 130 C105 125, 80 120, 55 110Z" fill="#4a7c3f"/>
+<path d="M55 20 C50 50, 48 80, 52 115" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M60 112 C75 108, 90 105, 110 103" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M175 30 L210 30 L210 45 L190 45 L190 55 L210 55 L210 85 L175 85 L175 70 L195 70 L195 65 L175 65 L175 40 L195 40 L195 35 L175 35 Z" fill="#fff" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+<path d="M218 30 L248 30 L248 85 L218 85 Z" fill="#fff" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+<path d="M255 30 L275 30 L285 55 L295 30 L315 30 L295 65 L295 85 L275 85 L275 65 Z" fill="#fff" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+<line x1="165" y1="105" x2="325" y2="105" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>
+<line x1="165" y1="120" x2="325" y2="120" stroke="#1a5fb4" stroke-width="7" stroke-linecap="round"/>
+<line x1="165" y1="135" x2="325" y2="135" stroke="#4a7c3f" stroke-width="7" stroke-linecap="round"/>
+<text x="345" y="55" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="#000" letter-spacing="3">SOLUCIONES</text>
+<text x="345" y="95" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="#000" letter-spacing="3">INTEGRALES</text>
+<text x="345" y="140" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="#000" letter-spacing="3">YERUKIM</text>
+</svg>
+<div class="header-subtitle">🌊 Sistema Integral PTAR + Shelly IoT</div>
+</div>
 
-    <div class="clock-container">
-        <div class="clock-time" id="clock">00:00:00</div>
-        <div class="clock-date" id="dateDisplay">Cargando fecha...</div>
-    </div>
+<div class="clock-container">
+<div class="clock-time" id="clock">00:00:00</div>
+<div class="clock-date" id="dateDisplay">Cargando...</div>
+</div>
 
-    <div class="status-bar">
-        <div class="status-item">
-            <div class="status-number" id="totalActions">0</div>
-            <div class="status-label">Acciones Hoy</div>
-        </div>
-        <div class="status-item">
-            <div class="status-number" id="totalOps">0</div>
-            <div class="status-label">Operaciones</div>
-        </div>
-        <div class="status-item">
-            <div class="status-number" id="totalMant">0</div>
-            <div class="status-label">Mantenimientos</div>
-        </div>
-    </div>
+<div class="tab-nav">
+<button class="tab-btn active" onclick="showModule('shelly',this)"><span class="tab-icon">🎛️</span>Shelly</button>
+<button class="tab-btn" onclick="showModule('monitoreo',this)"><span class="tab-icon">💧</span>Monitoreo</button>
+<button class="tab-btn" onclick="showModule('control',this)"><span class="tab-icon">⚙️</span>Control</button>
+<button class="tab-btn" onclick="showModule('mantenimiento',this)"><span class="tab-icon">🔧</span>Mantenim.</button>
+<button class="tab-btn" onclick="showModule('reportes',this)"><span class="tab-icon">📊</span>Reportes</button>
+<button class="tab-btn" onclick="showModule('recursos',this)"><span class="tab-icon">⚡</span>Recursos</button>
+<button class="tab-btn" onclick="showModule('procesos',this)"><span class="tab-icon">📋</span>Procesos</button>
+</div>
 
-    <div class="process-container" id="processContainer"></div>
+<!-- MÓDULO SHELLY -->
+<div class="module active" id="mod-shelly">
+<div class="card">
+<div class="card-header" onclick="toggleCard(this)">
+<div class="card-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)">🔌</div>
+<div class="card-info"><div class="card-number">Control IoT</div><div class="card-title">Dispositivos Shelly</div></div>
+<div class="card-arrow">▼</div>
+</div>
+<div class="card-content"><div class="card-inner">
+<div class="alert alert-info">ℹ️ Los dispositivos deben estar en la misma red WiFi. La app se comunica directamente con cada Shelly vía HTTP local.</div>
+<div class="shelly-add-form">
+<div class="section-title info">➕ Agregar dispositivo Shelly</div>
+<div class="form-group"><label class="form-label">Nombre del dispositivo</label><input type="text" class="form-input" id="shellyName" placeholder="Ej: Bomba Principal"></div>
+<div class="form-row">
+<div class="form-group"><label class="form-label">Dirección IP</label><input type="text" class="form-input" id="shellyIP" placeholder="192.168.1.100"></div>
+<div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="shellyType"><option value="shelly1">Shelly 1</option><option value="shelly1pm">Shelly 1PM</option><option value="shelly25">Shelly 2.5</option><option value="shellyplus1">Shelly Plus 1</option><option value="shellyplus1pm">Shelly Plus 1PM</option><option value="shellyplus2pm">Shelly Plus 2PM</option><option value="shellypro1">Shelly Pro 1</option><option value="shellypro4pm">Shelly Pro 4PM</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label class="form-label">Número de relays</label><input type="number" class="form-input" id="shellyRelays" value="1" min="1" max="4"></div>
+<div class="form-group"><label class="form-label">Usuario (opcional)</label><input type="text" class="form-input" id="shellyUser" placeholder="admin"></div>
+</div>
+<div class="form-group"><label class="form-label">Contraseña (opcional)</label><input type="password" class="form-input" id="shellyPass" placeholder="••••••••"></div>
+<button class="btn btn-primary" onclick="addShellyDevice()">➕ Agregar Dispositivo</button>
+<button class="btn btn-secondary" onclick="scanNetwork()" style="margin-top:6px">🔍 Escanear red local</button>
+</div>
+<div id="shellyDevicesList"><div class="alert alert-info">ℹ️ No hay dispositivos Shelly configurados.</div></div>
+<div class="section-title info">⚡ Escenas rápidas</div>
+<div class="scene-grid">
+<button class="scene-btn on-all" onclick="allShellyOn()"><span class="scene-icon">🟢</span>ENCENDER TODO</button>
+<button class="scene-btn off-all" onclick="allShellyOff()"><span class="scene-icon">🔴</span>APAGAR TODO</button>
+<button class="scene-btn schedule" onclick="showSchedule()"><span class="scene-icon">⏰</span>Programar</button>
+<button class="scene-btn" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff" onclick="refreshAllShelly()"><span class="scene-icon">🔄</span>Actualizar todos</button>
+</div>
+</div></div>
+</div>
+<div class="card">
+<div class="card-header" onclick="toggleCard(this)">
+<div class="card-icon" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)">📊</div>
+<div class="card-info"><div class="card-number">Control IoT</div><div class="card-title">Historial de Comandos</div></div>
+<div class="card-arrow">▼</div>
+</div>
+<div class="card-content"><div class="card-inner">
+<div id="shellyLog"><div class="alert alert-info">ℹ️ Sin comandos ejecutados.</div></div>
+<button class="btn btn-danger" onclick="clearShellyLog()" style="margin-top:10px">🗑️ Limpiar historial</button>
+</div></div>
+</div>
+</div>
 
-    <div class="section-divider">— Acciones Especiales —</div>
+<!-- MÓDULO MONITOREO -->
+<div class="module" id="mod-monitoreo">
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">💧</div><div class="card-info"><div class="card-number">Módulo 1</div><div class="card-title">Registro de Caudales</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-row"><div class="form-group"><label class="form-label">Caudal Entrada (m³/h)</label><input type="number" class="form-input" id="caudalEntrada" placeholder="0.00" step="0.01"></div><div class="form-group"><label class="form-label">Caudal Salida (m³/h)</label><input type="number" class="form-input" id="caudalSalida" placeholder="0.00" step="0.01"></div></div>
+<div class="form-group"><label class="form-label">Observaciones</label><input type="text" class="form-input" id="caudalObs" placeholder="Notas..."></div>
+<button class="btn btn-primary" onclick="registrarCaudal()">💾 Registrar Caudal</button>
+</div></div></div>
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#10b981,#059669)">🔬</div><div class="card-info"><div class="card-number">Módulo 1</div><div class="card-title">Parámetros Fisicoquímicos</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-row"><div class="form-group"><label class="form-label">pH</label><input type="number" class="form-input" id="paramPH" placeholder="6.5-8.5" step="0.1"></div><div class="form-group"><label class="form-label">Temperatura (°C)</label><input type="number" class="form-input" id="paramTemp" placeholder="°C" step="0.1"></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Oxígeno Disuelto (mg/L)</label><input type="number" class="form-input" id="paramOD" placeholder="mg/L" step="0.1"></div><div class="form-group"><label class="form-label">Conductividad (μS/cm)</label><input type="number" class="form-input" id="paramCond" placeholder="μS/cm" step="1"></div></div>
+<div class="form-group"><label class="form-label">Sólidos Suspendidos (mg/L)</label><input type="number" class="form-input" id="paramSS" placeholder="mg/L" step="1"></div>
+<div class="form-group"><label class="form-label">DBO5 (mg/L)</label><input type="number" class="form-input" id="paramDBO" placeholder="mg/L" step="1"></div>
+<div class="form-group"><label class="form-label">DQO (mg/L)</label><input type="number" class="form-input" id="paramDQO" placeholder="mg/L" step="1"></div>
+<button class="btn btn-primary" onclick="registrarParametros()">💾 Registrar Parámetros</button>
+</div></div></div>
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)">🚨</div><div class="card-info"><div class="card-number">Módulo 1</div><div class="card-title">Alertas Automáticas</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div id="alertasContainer"><div class="alert alert-info">ℹ️ Sin alertas activas.</div></div>
+<button class="btn btn-secondary" onclick="verificarAlertas()">🔄 Verificar Alertas</button>
+</div></div></div>
+</div>
 
-    <div class="process-container">
-        <div class="special-card finaliza-card" id="finalizaCard">
-            <div class="special-header" onclick="toggleSpecial('finalizaCard')">
-                <div class="special-icon">🏁</div>
-                <div class="special-info">
-                    <div class="special-number">Acción Especial</div>
-                    <div class="special-title">FINALIZA PROCESO</div>
-                </div>
-                <div class="special-arrow">▼</div>
-            </div>
-            <div class="special-content">
-                <div class="special-content-inner">
-                    <div class="section-title finish"> Resumen de Jornada</div>
-                    <p style="font-size:0.82em; opacity:0.8; margin-bottom:10px;">Al finalizar, se generará un reporte completo de todas las actividades realizadas hoy para enviar por WhatsApp.</p>
-                    <div class="finish-summary" id="finishSummary">
-                        <div class="finish-summary-item"><span>⚡ Operaciones realizadas:</span><span id="finishOps">0</span></div>
-                        <div class="finish-summary-item"><span> Mantenimientos realizados:</span><span id="finishMant">0</span></div>
-                        <div class="finish-summary-item"><span>📦 Insumos solicitados:</span><span id="finishInsumos">0</span></div>
-                        <div class="finish-summary-item"><span>✅ TOTAL ACCIONES:</span><span id="finishTotal">0</span></div>
-                    </div>
-                    <button class="finish-btn" onclick="sendFinishWhatsApp()">🏁 FINALIZAR Y ENVIAR POR WHATSAPP</button>
-                </div>
-            </div>
-        </div>
+<!-- MÓDULO CONTROL -->
+<div class="module" id="mod-control">
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">⚙️</div><div class="card-info"><div class="card-number">Módulo 2</div><div class="card-title">Estado de Unidades</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0">
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,0.1)"><div style="font-size:1.5em;font-weight:700;color:#4ade80" id="estadoReactor">●</div><div style="font-size:0.7em;opacity:0.7;text-transform:uppercase;margin-top:4px">Reactor BioAmp</div></div>
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,0.1)"><div style="font-size:1.5em;font-weight:700;color:#4ade80" id="estadoClar1">●</div><div style="font-size:0.7em;opacity:0.7;text-transform:uppercase;margin-top:4px">Clarificador 1</div></div>
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,0.1)"><div style="font-size:1.5em;font-weight:700;color:#4ade80" id="estadoClar2">●</div><div style="font-size:0.7em;opacity:0.7;text-transform:uppercase;margin-top:4px">Clarificador 2</div></div>
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,0.1)"><div style="font-size:1.5em;font-weight:700;color:#4ade80" id="estadoLodos">●</div><div style="font-size:0.7em;opacity:0.7;text-transform:uppercase;margin-top:4px">Sist. de Lodos</div></div>
+</div>
+<div class="form-group"><label class="form-label">Cambiar estado de unidad</label><select class="form-select" id="unidadSelect"><option value="reactor">Reactor BioAmp</option><option value="clar1">Clarificador 1</option><option value="clar2">Clarificador 2</option><option value="lodos">Sistema de Lodos</option></select></div>
+<div class="form-group"><label class="form-label">Nuevo estado</label><select class="form-select" id="estadoSelect"><option value="ok">✅ Operativo</option><option value="warn">⚠️ En mantenimiento</option><option value="error">🔴 Fuera de servicio</option></select></div>
+<button class="btn btn-primary" onclick="actualizarEstadoUnidad()">💾 Actualizar Estado</button>
+</div></div></div>
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">📊</div><div class="card-info"><div class="card-number">Módulo 2</div><div class="card-title">Niveles de Tanques</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-group"><label class="form-label">Depósito 1 (%)</label><input type="range" id="nivelTanque1" min="0" max="100" value="50" oninput="updateNivel(1,this.value)" style="width:100%"><div style="display:flex;justify-content:space-between;font-size:0.8em;opacity:0.7"><span>0%</span><span id="nivelVal1">50%</span><span>100%</span></div></div>
+<div class="form-group"><label class="form-label">Depósito 2 (%)</label><input type="range" id="nivelTanque2" min="0" max="100" value="50" oninput="updateNivel(2,this.value)" style="width:100%"><div style="display:flex;justify-content:space-between;font-size:0.8em;opacity:0.7"><span>0%</span><span id="nivelVal2">50%</span><span>100%</span></div></div>
+<div class="form-group"><label class="form-label">Depósito 3 (%)</label><input type="range" id="nivelTanque3" min="0" max="100" value="50" oninput="updateNivel(3,this.value)" style="width:100%"><div style="display:flex;justify-content:space-between;font-size:0.8em;opacity:0.7"><span>0%</span><span id="nivelVal3">50%</span><span>100%</span></div></div>
+<div class="form-group"><label class="form-label">Tanque Blanco (%)</label><input type="range" id="nivelTanqueB" min="0" max="100" value="50" oninput="updateNivel('B',this.value)" style="width:100%"><div style="display:flex;justify-content:space-between;font-size:0.8em;opacity:0.7"><span>0%</span><span id="nivelValB">50%</span><span>100%</span></div></div>
+<button class="btn btn-primary" onclick="guardarNiveles()">💾 Guardar Niveles</button>
+</div></div></div>
+</div>
 
-        <div class="special-card insumos-card" id="insumosCard">
-            <div class="special-header" onclick="toggleSpecial('insumosCard')">
-                <div class="special-icon"></div>
-                <div class="special-info">
-                    <div class="special-number">Acción Especial</div>
-                    <div class="special-title">SOLICITUD DE INSUMOS</div>
-                </div>
-                <div class="special-arrow">▼</div>
-            </div>
-            <div class="special-content">
-                <div class="special-content-inner">
-                    <div class="section-title mant">📦 Selecciona los insumos necesarios</div>
-                    <p style="font-size:0.82em; opacity:0.8; margin-bottom:10px;">Toca cada insumo para seleccionarlo. Al final, envía la solicitud por WhatsApp.</p>
-                    <button class="select-all-btn" onclick="toggleSelectAll()">☑️ Seleccionar / Deseleccionar todos</button>
-                    <div class="insumos-counter">Insumos seleccionados: <strong id="insumosCount">0</strong> de <strong id="insumosTotal">21</strong></div>
-                    <div id="insumosList"></div>
-                    <button class="whatsapp-btn" onclick="sendInsumosWhatsApp()">
-                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Enviar Solicitud por WhatsApp
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- MÓDULO MANTENIMIENTO -->
+<div class="module" id="mod-mantenimiento">
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📅</div><div class="card-info"><div class="card-number">Módulo 3</div><div class="card-title">Calendario de Mantenimiento</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-group"><label class="form-label">Equipo</label><select class="form-select" id="mantEquipo"><option>Bomba de entrada</option><option>Bomba de recirculación</option><option>Soplador BioAmp</option><option>Bomba de lodos</option><option>Bomba de efluente</option><option>Motor agitador</option><option>Lámpara UV</option><option>Filtro de arena</option><option>Filtro de membrana</option><option>Sistema de cloración</option></select></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="mantTipo"><option>Preventivo</option><option>Correctivo</option><option>Predictivo</option></select></div><div class="form-group"><label class="form-label">Fecha</label><input type="date" class="form-input" id="mantFecha"></div></div>
+<div class="form-group"><label class="form-label">Descripción</label><input type="text" class="form-input" id="mantDesc" placeholder="Descripción..."></div>
+<button class="btn btn-warning" onclick="agendarMantenimiento()">📅 Agendar</button>
+<div id="mantenimientosList" style="margin-top:15px"></div>
+</div></div></div>
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">📦</div><div class="card-info"><div class="card-number">Módulo 3</div><div class="card-title">Inventario de Refacciones</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-row"><div class="form-group"><label class="form-label">Refacción</label><input type="text" class="form-input" id="invNombre" placeholder="Nombre..."></div><div class="form-group"><label class="form-label">Stock</label><input type="number" class="form-input" id="invStock" placeholder="0" min="0"></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Mínimo</label><input type="number" class="form-input" id="invMin" placeholder="0" min="0"></div><div class="form-group"><label class="form-label">Ubicación</label><input type="text" class="form-input" id="invUbic" placeholder="Bodega..."></div></div>
+<button class="btn btn-secondary" onclick="agregarInventario()">📦 Agregar</button>
+<div id="inventarioList" style="margin-top:15px"></div>
+</div></div></div>
+</div>
 
-    <div class="log-container">
-        <div class="log-title">📋 Registro de Actividades</div>
-        <div id="logEntries"></div>
-        <button class="clear-log-btn" onclick="clearLog()">🗑️ Limpiar Registro</button>
-    </div>
+<!-- MÓDULO REPORTES -->
+<div class="module" id="mod-reportes">
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#10b981,#059669)">📊</div><div class="card-info"><div class="card-number">Módulo 4</div><div class="card-title">Generación de Reportes</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="reporteTipo"><option value="diario">📅 Diario</option><option value="semanal">📆 Semanal</option><option value="mensual">🗓️ Mensual</option><option value="anual">📊 Anual</option></select></div>
+<div class="form-group"><label class="form-label">Fecha</label><input type="date" class="form-input" id="reporteFecha"></div>
+<div class="form-group"><label class="form-label">Formato</label><select class="form-select" id="reporteFormato"><option value="pdf">📄 PDF</option><option value="excel">📊 Excel (CSV)</option><option value="whatsapp">📱 WhatsApp</option></select></div>
+<button class="btn btn-primary" onclick="generarReporte()">📊 Generar</button>
+<div id="reportesList" style="margin-top:15px"></div>
+</div></div></div>
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">✅</div><div class="card-info"><div class="card-number">Módulo 4</div><div class="card-title">Cumplimiento NOM-001</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;border-left:4px solid #4ade80;display:flex;justify-content:space-between;align-items:center"><div style="font-size:0.85em">DBO5 (máx 120 mg/L)</div><div style="font-size:1.1em;font-weight:700;color:#4ade80" id="normaDBO">✓</div></div>
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;border-left:4px solid #4ade80;display:flex;justify-content:space-between;align-items:center"><div style="font-size:0.85em">DQO (máx 200 mg/L)</div><div style="font-size:1.1em;font-weight:700;color:#4ade80" id="normaDQO">✓</div></div>
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;border-left:4px solid #4ade80;display:flex;justify-content:space-between;align-items:center"><div style="font-size:0.85em">SST (máx 120 mg/L)</div><div style="font-size:1.1em;font-weight:700;color:#4ade80" id="normaSST">✓</div></div>
+<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;border-left:4px solid #4ade80;display:flex;justify-content:space-between;align-items:center"><div style="font-size:0.85em">pH (6.5 - 8.5)</div><div style="font-size:1.1em;font-weight:700;color:#4ade80" id="normaPH">✓</div></div>
+<button class="btn btn-secondary" onclick="verificarCumplimiento()">🔄 Verificar</button>
+</div></div></div>
+</div>
 
-    <div class="fab-container">
-        <button class="fab" onclick="sendAllWhatsApp()" title="Enviar todo por WhatsApp">
-            <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </button>
-    </div>
+<!-- MÓDULO RECURSOS -->
+<div class="module" id="mod-recursos">
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#eab308,#ca8a04)">⚡</div><div class="card-info"><div class="card-number">Módulo 5</div><div class="card-title">Consumo de Energía</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-row"><div class="form-group"><label class="form-label">Lectura anterior (kWh)</label><input type="number" class="form-input" id="energiaAnt" placeholder="0" step="0.1"></div><div class="form-group"><label class="form-label">Lectura actual (kWh)</label><input type="number" class="form-input" id="energiaAct" placeholder="0" step="0.1"></div></div>
+<div class="form-group"><label class="form-label">Período</label><select class="form-select" id="energiaPeriodo"><option>Diario</option><option>Semanal</option><option selected>Mensual</option></select></div>
+<div class="form-group"><label class="form-label">Costo por kWh ($)</label><input type="number" class="form-input" id="energiaCosto" placeholder="0.00" step="0.01" value="2.50"></div>
+<button class="btn btn-warning" onclick="registrarEnergia()">⚡ Registrar</button>
+<div id="energiaResumen" style="margin-top:15px"></div>
+</div></div></div>
+<div class="card"><div class="card-header" onclick="toggleCard(this)"><div class="card-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">🧪</div><div class="card-info"><div class="card-number">Módulo 5</div><div class="card-title">Stock de Químicos</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="form-row"><div class="form-group"><label class="form-label">Insumo</label><input type="text" class="form-input" id="quimNombre" placeholder="Nombre..."></div><div class="form-group"><label class="form-label">Stock</label><input type="number" class="form-input" id="quimStock" placeholder="0" step="0.1"></div></div>
+<div class="form-row"><div class="form-group"><label class="form-label">Unidad</label><select class="form-select" id="quimUnidad"><option>kg</option><option>L</option><option>pastillas</option><option>botes</option><option>cubetas</option></select></div><div class="form-group"><label class="form-label">Mínimo</label><input type="number" class="form-input" id="quimMin" placeholder="0" step="0.1"></div></div>
+<button class="btn btn-secondary" onclick="agregarQuimico()">🧪 Agregar</button>
+<div id="quimicosList" style="margin-top:15px"></div>
+</div></div></div>
+</div>
 
-    <div class="notification" id="notification"></div>
+<!-- MÓDULO PROCESOS -->
+<div class="module" id="mod-procesos">
+<div class="section-divider">— Procesos Operativos —</div>
+<div id="processContainer"></div>
+<div class="section-divider">— Acciones Especiales —</div>
+<div class="card" id="finalizaCard"><div class="card-header" onclick="toggleCardById('finalizaCard')"><div class="card-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)">🏁</div><div class="card-info"><div class="card-number">Acción Especial</div><div class="card-title">FINALIZA PROCESO</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="section-title info">🏁 Resumen de Jornada</div>
+<div style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:10px;padding:12px;margin:10px 0">
+<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:0.85em;border-bottom:1px solid rgba(255,255,255,0.1)"><span>⚡ Operaciones:</span><span id="finishOps">0</span></div>
+<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:0.85em;border-bottom:1px solid rgba(255,255,255,0.1)"><span>🔧 Mantenimientos:</span><span id="finishMant">0</span></div>
+<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:0.85em;border-bottom:1px solid rgba(255,255,255,0.1)"><span>📦 Insumos:</span><span id="finishInsumos">0</span></div>
+<div style="display:flex;justify-content:space-between;padding:6px 0;font-weight:700;color:#f87171"><span>✅ TOTAL:</span><span id="finishTotal">0</span></div>
+</div>
+<button class="btn btn-danger" onclick="sendFinishWhatsApp()">🏁 FINALIZAR Y ENVIAR</button>
+</div></div></div>
 
-    <div class="modal-overlay" id="whatsappModal">
-        <div class="modal">
-            <h3>📱 Enviar por WhatsApp</h3>
-            <p style="font-size:0.85em; opacity:0.8; margin-bottom:15px;">Ingresa el número del grupo o contacto (con código de país, ej: 521234567890). Déjalo vacío para elegir contacto manualmente.</p>
-            <input type="text" class="modal-input" id="whatsappNumber" placeholder="521234567890" value="">
-            <textarea class="modal-input" id="whatsappMessage" rows="6" placeholder="Mensaje..." style="resize:vertical;"></textarea>
-            <button class="modal-btn primary" onclick="confirmWhatsApp()">📤 Enviar Mensaje</button>
-            <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
-        </div>
-    </div>
+<div class="card" id="insumosCard"><div class="card-header" onclick="toggleCardById('insumosCard')"><div class="card-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706)">📦</div><div class="card-info"><div class="card-number">Acción Especial</div><div class="card-title">SOLICITUD DE INSUMOS</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">
+<div class="section-title mant">📦 Selecciona insumos</div>
+<button class="btn btn-warning" onclick="toggleSelectAll()" style="background:rgba(251,191,36,0.15);color:#fcd34d;border:1px dashed rgba(251,191,36,0.4)">☑️ Seleccionar todos</button>
+<div style="text-align:center;padding:10px;margin:10px 0;background:rgba(251,191,36,0.1);border-radius:10px;font-size:0.9em;color:#fcd34d;border:1px solid rgba(251,191,36,0.2)">Seleccionados: <strong id="insumosCount">0</strong> de <strong id="insumosTotal">21</strong></div>
+<div id="insumosList"></div>
+<button class="btn btn-whatsapp" onclick="sendInsumosWhatsApp()">📱 Enviar por WhatsApp</button>
+</div></div></div>
 
-    <script>
-        const processes = [
-            { id: 1, number: "Proceso 1", title: "BioAmp al Depósito 1", icon: "",
-              operations: ["Automatizada"],
-              maintenance: ["Mantenimiento de BioAmp", "Llenado de bacterias", "Corrección de BioAmp en estado de error", "Limpieza de basura del depósito 🛅"] },
-            { id: 2, number: "Proceso 2", title: "Depósito 1 - Separador - Depósito 2", icon: "⚙️",
-              operations: ["Transferencia de aguas del depósito 1 al depósito 2", "Transferencia de aguas del depósito 2 al proceso 3 (Sedimentadores)"],
-              maintenance: ["Limpieza de trampa de sólidos", "Limpieza de lodo del separador", "Limpieza de lodo del depósito 2"] },
-            { id: 3, number: "Proceso 3", title: "Sedimentadores", icon: "🔽",
-              operations: ["Transferencia de aguas de sedimentadores al depósito 3"],
-              maintenance: ["Drenado de lodos (Sedimentadores)"] },
-            { id: 4, number: "Proceso 4", title: "Filtración Primaria (arena, cartucho, cloración) → Depósito 3", icon: "🔬",
-              operations: [],
-              maintenance: ["Mantenimiento de filtros de arena (retrolavado)", "Cambio de arena a filtros", "Limpieza / cambio de filtros de membrana", "Recarga de pastillas de cloro", "Limpieza del piso del área de filtros", "Limpieza de filtro de bomba", "Mantenimiento del depósito 3"] },
-            { id: 5, number: "Proceso 5", title: "Filtración Secundaria (Zeolita, carbón, lámpara UV)", icon: "💡",
-              operations: ["Transferencia de aguas del depósito 3 al proceso 6"],
-              maintenance: ["Mantenimiento de filtros (retrolavado)", "Limpieza / cambio de filtros de membrana", "Limpieza de Pichincha", "Limpieza de filtro de bomba", "Sustitución de lámpara UV"] },
-            { id: 6, number: "Proceso 6", title: "Disposición Final (riego, pileta, uso interno)", icon: "💧",
-              operations: ["Llenado de tanque blanco para uso interno en PTAR"],
-              maintenance: ["Limpieza de hojas y algas", "Limpieza de lodos del fondo de la alberca", "Limpieza del tanque blanco"] },
-            { id: 7, number: "Proceso 7", title: "Lodos al Lecho de Secado", icon: "🏜️",
-              operations: [],
-              maintenance: ["Limpieza del depósito de lodos"] },
-            { id: 8, number: "Actividades Complementarias", title: "Mantenimiento General", icon: "🧹",
-              operations: [],
-              maintenance: ["Mantenimiento de áreas verdes internas y externas", "Retiro de basura", "Limpieza de baño", "Limpieza de bodega", "Limpieza de bodeguita", "Limpieza de tinaco"] }
-        ];
+<div style="padding:15px;margin-top:10px">
+<div style="font-size:1em;font-weight:600;margin-bottom:10px">📋 Registro de Actividades</div>
+<div id="logEntries"></div>
+<button class="btn btn-danger" onclick="clearLog()" style="margin-top:10px;background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.3)">🗑️ Limpiar</button>
+</div>
+</div>
 
-        const insumos = [
-            { id: 1, text: "Solicitud de bacterias", note: "⚠️ Queda solo 1 bote" },
-            { id: 2, text: "Solicitud de filtro de membrana", note: "Código 012-014-D-002 — Marca Panda o equivalente" },
-            { id: 3, text: "Solicitud de pastillas de cloro", note: "⚠️ Queda 1 cubeta" },
-            { id: 4, text: "Solicitud de O-ring de la tapa de los filtros de cloro", note: "" },
-            { id: 5, text: "Solicitud de O-ring de la tapa de los filtros de membrana", note: "" },
-            { id: 6, text: "Solicitud de tornillo de desahogo de presión", note: "Tapa filtro de membrana / cloro" },
-            { id: 7, text: "Solicitud de arena sílica", note: "Malla 20-30" },
-            { id: 8, text: "Solicitud de repuesto de lámpara UV", note: "" },
-            { id: 9, text: "Solicitud de detergente en polvo", note: "" },
-            { id: 10, text: "Solicitud de papel de baño", note: "" },
-            { id: 11, text: "Solicitud de bolsas jumbo", note: "" },
-            { id: 12, text: "Solicitud de bolsas para bote de baño", note: "De 12 galones" },
-            { id: 13, text: "Solicitud de pinol", note: "" },
-            { id: 14, text: "Solicitud de escoba", note: "" },
-            { id: 15, text: "Solicitud de escurridor", note: "" },
-            { id: 16, text: "Solicitud de recogedor", note: "" },
-            { id: 17, text: "Solicitud de araña", note: "" },
-            { id: 18, text: "Solicitud de jabón para manos", note: "1 galón" },
-            { id: 19, text: "Solicitud de cloro líquido para baño", note: "" },
-            { id: 20, text: "Solicitud de pastillas de aroma para la taza", note: "" },
-            { id: 21, text: "Solicitud de Gatorade en polvo", note: "" }
-        ];
+<div class="fab-container"><button class="fab" onclick="sendAllWhatsApp()" title="Enviar todo"><svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></button></div>
 
-        let activityLog = [];
-        let opCount = 0;
-        let mantCount = 0;
-        let selectedInsumos = new Set();
+<div class="notification" id="notification"></div>
+<div class="modal-overlay" id="whatsappModal"><div class="modal"><h3>📱 Enviar por WhatsApp</h3><p style="font-size:0.85em;opacity:0.8;margin-bottom:15px">Número del grupo (con código de país, ej: 521234567890). Vacío = elegir manualmente.</p><input type="text" class="form-input" id="whatsappNumber" placeholder="521234567890" value="" autocomplete="off" style="margin-bottom:10px"><textarea class="form-input" id="whatsappMessage" rows="6" placeholder="Mensaje..." style="resize:vertical;margin-bottom:10px"></textarea><button class="btn btn-whatsapp" onclick="confirmWhatsApp()">📤 Enviar</button><button class="btn" onclick="closeModal()" style="background:rgba(255,255,255,0.1);color:#fff">Cancelar</button></div></div>
 
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateStr = now.toLocaleDateString('es-MX', options);
-            document.getElementById('dateDisplay').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+<script>
+const processes=[
+{id:1,number:"Proceso 1",title:"BioAmp al Depósito 1",icon:"🦠",operations:["Automatizada"],maintenance:["Mantenimiento de BioAmp","Llenado de bacterias","Corrección error BioAmp","Limpieza de basura depósito 🛅"]},
+{id:2,number:"Proceso 2",title:"Depósito 1 - Separador - Depósito 2",icon:"⚙️",operations:["Transferencia depósito 1 → 2","Transferencia depósito 2 → proceso 3"],maintenance:["Limpieza trampa de sólidos","Limpieza lodo del separador","Limpieza lodo depósito 2"]},
+{id:3,number:"Proceso 3",title:"Sedimentadores",icon:"🔽",operations:["Transferencia sedimentadores → depósito 3"],maintenance:["Drenado de lodos"]},
+{id:4,number:"Proceso 4",title:"Filtración Primaria",icon:"🔬",operations:[],maintenance:["Retrolavado filtros arena","Cambio de arena","Limpieza filtros membrana","Recarga pastillas cloro","Limpieza piso filtros","Limpieza filtro bomba","Mantenimiento depósito 3"]},
+{id:5,number:"Proceso 5",title:"Filtración Secundaria UV",icon:"💡",operations:["Transferencia depósito 3 → proceso 6"],maintenance:["Retrolavado filtros","Limpieza filtros membrana","Limpieza Pichincha","Limpieza filtro bomba","Sustitución lámpara UV"]},
+{id:6,number:"Proceso 6",title:"Disposición Final",icon:"💧",operations:["Llenado tanque blanco uso interno"],maintenance:["Limpieza hojas y algas","Limpieza lodos alberca","Limpieza tanque blanco"]},
+{id:7,number:"Proceso 7",title:"Lodos al Lecho de Secado",icon:"🏜️",operations:[],maintenance:["Limpieza depósito de lodos"]},
+{id:8,number:"Actividades Complementarias",title:"Mantenimiento General",icon:"🧹",operations:[],maintenance:["Mantenimiento áreas verdes","Sacado de basura","Limpieza de baño","Limpieza de bodega","Limpieza de bodeguita","Limpieza de tinaco"]}
+];
 
-        function renderProcesses() {
-            const container = document.getElementById('processContainer');
-            container.innerHTML = '';
-            processes.forEach(proc => {
-                const card = document.createElement('div');
-                card.className = `process-card proc-${proc.id}`;
-                card.id = `proc-${proc.id}`;
-                let html = `
-                    <div class="process-header" onclick="toggleProcess(${proc.id})">
-                        <div class="process-icon">${proc.icon}</div>
-                        <div class="process-info">
-                            <div class="process-number">${proc.number}</div>
-                            <div class="process-title">${proc.title}</div>
-                        </div>
-                        <div class="process-arrow">▼</div>
-                    </div>
-                    <div class="process-content"><div class="content-inner">`;
-                if (proc.operations.length > 0) {
-                    html += `<div class="section-title op">⚡ Operación</div>`;
-                    proc.operations.forEach((op, idx) => {
-                        html += `<button class="action-btn op-btn" onclick="registerAction(${proc.id}, 'Operación', '${op.replace(/'/g, "\\'")}', this)">
-                            <span class="btn-icon">▶️</span><span class="btn-text">${op}</span>
-                            <span class="btn-time" id="time-${proc.id}-op-${idx}">--:--</span></button>`;
-                    });
-                }
-                if (proc.maintenance.length > 0) {
-                    html += `<div class="section-title mant">🔧 Mantenimiento</div>`;
-                    proc.maintenance.forEach((mant, idx) => {
-                        html += `<button class="action-btn mant-btn" onclick="registerAction(${proc.id}, 'Mantenimiento', '${mant.replace(/'/g, "\\'")}', this)">
-                            <span class="btn-icon">🔧</span><span class="btn-text">${mant}</span>
-                            <span class="btn-time" id="time-${proc.id}-mant-${idx}">--:--</span></button>`;
-                    });
-                }
-                html += `<button class="whatsapp-btn" onclick="sendProcessWhatsApp(${proc.id})">
-                    <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Enviar Proceso ${proc.id} por WhatsApp</button></div></div>`;
-                card.innerHTML = html;
-                container.appendChild(card);
-            });
-        }
+const insumos=[
+{id:1,text:"Solicitud de bacterias",note:"⚠️ Queda sólo 1 bote"},
+{id:2,text:"Solicitud de filtro de membrana",note:"Código 012-014-D-002 — Panda o equivalente"},
+{id:3,text:"Solicitud de pastillas de cloro",note:"⚠️ Queda 1 cubeta"},
+{id:4,text:"Solicitud de o-ring tapa filtros cloro",note:""},
+{id:5,text:"Solicitud de o-ring tapa filtros membrana",note:""},
+{id:6,text:"Solicitud de tornillo desahogo presión",note:"Tapa filtro membrana/cloro"},
+{id:7,text:"Solicitud de arena sílica",note:"Malla 20-30"},
+{id:8,text:"Solicitud de repuesto lámpara UV",note:""},
+{id:9,text:"Solicitud de detergente en polvo",note:""},
+{id:10,text:"Solicitud de papel de baño",note:""},
+{id:11,text:"Solicitud de bolsas jumbo",note:""},
+{id:12,text:"Solicitud de bolsas bote baño",note:"De 12 galones"},
+{id:13,text:"Solicitud de pinol",note:""},
+{id:14,text:"Solicitud de escoba",note:""},
+{id:15,text:"Solicitud de escurridor",note:""},
+{id:16,text:"Solicitud de recogedor",note:""},
+{id:17,text:"Solicitud de araña",note:""},
+{id:18,text:"Solicitud de jabón para manos",note:"1 galón"},
+{id:19,text:"Solicitud de cloro líquido baño",note:""},
+{id:20,text:"Solicitud de pastillas aroma taza",note:""},
+{id:21,text:"Solicitud de Gatorade en polvo",note:""}
+];
 
-        function renderInsumos() {
-            const container = document.getElementById('insumosList');
-            container.innerHTML = '';
-            document.getElementById('insumosTotal').textContent = insumos.length;
-            insumos.forEach(ins => {
-                const btn = document.createElement('button');
-                btn.className = 'insumo-item';
-                btn.id = `insumo-${ins.id}`;
-                btn.onclick = () => toggleInsumo(ins.id);
-                let html = `<div class="insumo-checkbox" id="check-${ins.id}"></div><div class="insumo-text">${ins.text}`;
-                if (ins.note) html += `<span class="insumo-note">${ins.note}</span>`;
-                html += `</div>`;
-                btn.innerHTML = html;
-                container.appendChild(btn);
-            });
-        }
+const LIMITS={pH:{min:6.5,max:8.5},OD:{min:2},Temp:{max:40},Cond:{max:2500},SS:{max:120},DBO:{max:120},DQO:{max:200}};
 
-        function toggleProcess(id) { document.getElementById(`proc-${id}`).classList.toggle('active'); }
-        function toggleSpecial(id) {
-            document.getElementById(id).classList.toggle('active');
-            if (id === 'finalizaCard') updateFinishSummary();
-        }
-        function toggleInsumo(id) {
-            const btn = document.getElementById(`insumo-${id}`);
-            const check = document.getElementById(`check-${id}`);
-            if (selectedInsumos.has(id)) {
-                selectedInsumos.delete(id);
-                btn.classList.remove('selected');
-                check.textContent = '';
-            } else {
-                selectedInsumos.add(id);
-                btn.classList.add('selected');
-                check.textContent = '✓';
-            }
-            document.getElementById('insumosCount').textContent = selectedInsumos.size;
-        }
-        function toggleSelectAll() {
-            if (selectedInsumos.size === insumos.length) {
-                insumos.forEach(ins => {
-                    selectedInsumos.delete(ins.id);
-                    document.getElementById(`insumo-${ins.id}`).classList.remove('selected');
-                    document.getElementById(`check-${ins.id}`).textContent = '';
-                });
-            } else {
-                insumos.forEach(ins => {
-                    selectedInsumos.add(ins.id);
-                    document.getElementById(`insumo-${ins.id}`).classList.add('selected');
-                    document.getElementById(`check-${ins.id}`).textContent = '✓';
-                });
-            }
-            document.getElementById('insumosCount').textContent = selectedInsumos.size;
-        }
+let activityLog=[],opCount=0,mantCount=0,selectedInsumos=new Set();
+let db={caudales:[],parametros:[],unidades:{reactor:'ok',clar1:'ok',clar2:'ok',lodos:'ok'},niveles:{1:50,2:50,3:50,B:50},dosificaciones:[],mantenimientos:[],fallas:[],inventario:[],quimicos:[],energia:[],reportes:[],shelly:[],shellyLog:[]};
 
-        function registerAction(procId, type, action, btnElement) {
-            const now = new Date();
-            const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-            const dateStr = now.toLocaleDateString('es-MX');
-            const timeElements = btnElement.querySelectorAll('.btn-time');
-            timeElements.forEach(el => el.textContent = timeStr);
-            const proc = processes.find(p => p.id === procId);
-            activityLog.push({ time: timeStr, date: dateStr, process: proc.number, type: type, action: action });
-            if (type === 'Operación') opCount++; else mantCount++;
-            updateStats();
-            renderLog();
-            showNotification(`✅ ${type} registrada: ${timeStr}`);
-            btnElement.style.background = type === 'Operación' ? 'rgba(96, 165, 250, 0.4)' : 'rgba(251, 191, 36, 0.4)';
-            setTimeout(() => { btnElement.style.background = ''; }, 1500);
-        }
+function saveDB(){try{localStorage.setItem('ptar_db',JSON.stringify(db))}catch(e){}}
+function loadDB(){try{const d=localStorage.getItem('ptar_db');if(d)db=JSON.parse(d)}catch(e){}}
 
-        function updateStats() {
-            document.getElementById('totalActions').textContent = activityLog.length;
-            document.getElementById('totalOps').textContent = opCount;
-            document.getElementById('totalMant').textContent = mantCount;
-        }
+function updateClock(){const n=new Date();document.getElementById('clock').textContent=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};const ds=n.toLocaleDateString('es-MX',opts);document.getElementById('dateDisplay').textContent=ds.charAt(0).toUpperCase()+ds.slice(1)}
+setInterval(updateClock,1000);updateClock();
 
-        function updateFinishSummary() {
-            document.getElementById('finishOps').textContent = opCount;
-            document.getElementById('finishMant').textContent = mantCount;
-            document.getElementById('finishInsumos').textContent = selectedInsumos.size;
-            document.getElementById('finishTotal').textContent = activityLog.length + selectedInsumos.size;
-        }
+function showModule(id,btn){document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('mod-'+id).classList.add('active');if(btn)btn.classList.add('active')}
+function toggleCard(el){el.parentElement.classList.toggle('active')}
+function toggleCardById(id){document.getElementById(id).classList.toggle('active')}
 
-        function renderLog() {
-            const container = document.getElementById('logEntries');
-            container.innerHTML = '';
-            [...activityLog].reverse().forEach(entry => {
-                const div = document.createElement('div');
-                div.className = 'log-entry';
-                div.innerHTML = `<div class="log-time">🕐 ${entry.time} - ${entry.date}</div>
-                    <div class="log-text"><strong>${entry.process}</strong> | ${entry.type}: ${entry.action}</div>`;
-                container.appendChild(div);
-            });
-        }
+// ============ SHELLY CONTROL ============
+function addShellyDevice(){
+const name=document.getElementById('shellyName').value.trim();
+const ip=document.getElementById('shellyIP').value.trim();
+const type=document.getElementById('shellyType').value;
+const relays=parseInt(document.getElementById('shellyRelays').value)||1;
+const user=document.getElementById('shellyUser').value.trim();
+const pass=document.getElementById('shellyPass').value;
+if(!name||!ip){showNotification('⚠️ Nombre e IP requeridos');return}
+if(!/^(\d{1,3}\.){3}\d{1,3}$/.test(ip)){showNotification('⚠️ IP inválida');return}
+const device={id:Date.now(),name,ip,type,relays,user,pass,createdAt:new Date().toISOString(),relaysState:[]};
+for(let i=0;i<relays;i++)device.relaysState.push({id:i,name:`Relay ${i+1}`,state:false,power:0});
+db.shelly.push(device);saveDB();
+['shellyName','shellyIP','shellyUser','shellyPass'].forEach(id=>document.getElementById(id).value='');
+document.getElementById('shellyRelays').value='1';
+showNotification('✅ Dispositivo agregado');
+renderShellyDevices();
+setTimeout(()=>refreshShellyDevice(device.id),500);
+}
 
-        function clearLog() {
-            if (confirm('¿Estás seguro de limpiar el registro?')) {
-                activityLog = []; opCount = 0; mantCount = 0;
-                selectedInsumos.clear();
-                insumos.forEach(ins => {
-                    const btn = document.getElementById(`insumo-${ins.id}`);
-                    if (btn) { btn.classList.remove('selected'); document.getElementById(`check-${ins.id}`).textContent = ''; }
-                });
-                document.getElementById('insumosCount').textContent = '0';
-                updateStats(); renderLog(); updateFinishSummary();
-                showNotification('🗑️ Registro limpiado');
-            }
-        }
+function renderShellyDevices(){
+const cont=document.getElementById('shellyDevicesList');
+if(db.shelly.length===0){cont.innerHTML='<div class="alert alert-info">ℹ️ No hay dispositivos Shelly configurados.</div>';return}
+cont.innerHTML=db.shelly.map(d=>{
+const relaysHtml=d.relaysState.map((r,i)=>`
+<div class="shelly-relay ${r.state?'on':'off'}">
+<div class="shelly-relay-name">${r.name}</div>
+<button class="shelly-toggle ${r.state?'on':'off'}" onclick="toggleShellyRelay(${d.id},${i})" title="${r.state?'Apagar':'Encender'}"></button>
+${r.power>0?`<div class="shelly-power">⚡ ${r.power.toFixed(1)}W</div>`:''}
+</div>`).join('');
+return`<div class="shelly-device online" id="shelly-dev-${d.id}">
+<div class="shelly-header">
+<div><div class="shelly-name">${d.name}</div><div class="shelly-ip">${d.ip} • ${d.type}</div></div>
+<div class="shelly-status"><div class="shelly-status-dot" id="shelly-dot-${d.id}"></div><span id="shelly-status-text-${d.id}">Verificando...</span></div>
+</div>
+<div class="shelly-relays">${relaysHtml}</div>
+<div class="shelly-actions">
+<button class="shelly-btn-refresh" onclick="refreshShellyDevice(${d.id})">🔄 Actualizar</button>
+<button class="shelly-btn-delete" onclick="deleteShellyDevice(${d.id})">🗑️ Eliminar</button>
+</div>
+</div>`;
+}).join('');
+}
 
-        function sendProcessWhatsApp(procId) {
-            const proc = processes.find(p => p.id === procId);
-            const procActions = activityLog.filter(a => a.process === proc.number);
-            let message = `🌊 *PTAR SIY - YERUKIM*\n📋 *${proc.number}: ${proc.title}*\n📅 ${new Date().toLocaleDateString('es-MX')}\n\n`;
-            if (procActions.length === 0) message += `⚠️ Sin actividades registradas.`;
-            else procActions.forEach(a => { message += `${a.type === 'Operación' ? '' : '🔧'} [${a.time}] ${a.action}\n`; });
-            message += `\n📊 Total: ${procActions.length}`;
-            document.getElementById('whatsappMessage').value = message;
-            document.getElementById('whatsappModal').classList.add('active');
-        }
+async function toggleShellyRelay(deviceId,relayId){
+const device=db.shelly.find(d=>d.id===deviceId);
+if(!device)return;
+const relay=device.relaysState[relayId];
+const newState=!relay.state;
+const dot=document.getElementById(`shelly-dot-${deviceId}`);
+if(dot){dot.className='shelly-status-dot loading'}
+try{
+let success=false;
+const isPlus=device.type.includes('plus')||device.type.includes('pro');
+if(isPlus){
+const headers={'Content-Type':'application/json'};
+if(device.user)headers['Authorization']='Basic '+btoa(device.user+':'+device.pass);
+const resp=await fetch(`http://${device.ip}/rpc`,{method:'POST',headers,body:JSON.stringify({id:1,method:'Switch.Set',params:{id:relayId,turn:newState}})});
+if(resp.ok){const data=await resp.json();success=data.result!==undefined}
+}else{
+const auth=device.user?`${device.user}:${device.pass}@`:'';
+const resp=await fetch(`http://${auth}${device.ip}/relay/${relayId}?turn=${newState?'on':'off'}`);
+success=resp.ok;
+}
+if(success){
+relay.state=newState;
+saveDB();
+logShellyCommand(device.name,relay.name,newState?'ON':'OFF','✅ Éxito');
+showNotification(`✅ ${relay.name} ${newState?'ENCENDIDO':'APAGADO'}`);
+}else{
+logShellyCommand(device.name,relay.name,newState?'ON':'OFF','❌ Falló');
+showNotification('❌ Error al controlar dispositivo');
+}
+}catch(e){
+logShellyCommand(device.name,relay.name,newState?'ON':'OFF','❌ Error: '+e.message);
+showNotification('❌ Error de conexión. Verifica red WiFi.');
+}
+renderShellyDevices();
+}
 
-        function sendFinishWhatsApp() {
-            if (activityLog.length === 0 && selectedInsumos.size === 0) {
-                showNotification('️ No hay actividades para reportar');
-                return;
-            }
-            let message = `🌊 *PTAR SIY - YERUKIM*\n🏁 *REPORTE DE FIN DE JORNADA*\n📅 ${new Date().toLocaleDateString('es-MX')}\n ${new Date().toLocaleTimeString('es-MX')}\n\n`;
-            message += `━━━━━━━━━━━━━━━━━━━━\n`;
-            message += ` *RESUMEN GENERAL*\n`;
-            message += `⚡ Operaciones: ${opCount}\n`;
-            message += ` Mantenimientos: ${mantCount}\n`;
-            message += `📦 Insumos solicitados: ${selectedInsumos.size}\n`;
-            message += `✅ *TOTAL: ${activityLog.length + selectedInsumos.size}*\n`;
-            message += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-            if (activityLog.length > 0) {
-                message += `📋 *DETALLE DE ACTIVIDADES:*\n\n`;
-                processes.forEach(proc => {
-                    const procActions = activityLog.filter(a => a.process === proc.number);
-                    if (procActions.length > 0) {
-                        message += `🔹 *${proc.number}: ${proc.title}*\n`;
-                        procActions.forEach(a => { message += `   ${a.type === 'Operación' ? '⚡' : '🔧'} [${a.time}] ${a.action}\n`; });
-                        message += `\n`;
-                    }
-                });
-            }
-            if (selectedInsumos.size > 0) {
-                message += `📦 *INSUMOS SOLICITADOS:*\n\n`;
-                insumos.forEach(ins => {
-                    if (selectedInsumos.has(ins.id)) {
-                        message += `☑️ ${ins.text}`;
-                        if (ins.note) message += ` _(${ins.note})_`;
-                        message += `\n`;
-                    }
-                });
-            }
-            message += `\n━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `🌿 *SIY Soluciones Integrales Yerukim*`;
-            document.getElementById('whatsappMessage').value = message;
-            document.getElementById('whatsappModal').classList.add('active');
-        }
+async function refreshShellyDevice(deviceId){
+const device=db.shelly.find(d=>d.id===deviceId);
+if(!device)return;
+const dot=document.getElementById(`shelly-dot-${deviceId}`);
+const statusText=document.getElementById(`shelly-status-text-${deviceId}`);
+if(dot)dot.className='shelly-status-dot loading';
+if(statusText)statusText.textContent='Conectando...';
+try{
+const isPlus=device.type.includes('plus')||device.type.includes('pro');
+if(isPlus){
+const headers={'Content-Type':'application/json'};
+if(device.user)headers['Authorization']='Basic '+btoa(device.user+':'+device.pass);
+for(let i=0;i<device.relays;i++){
+try{
+const r=await fetch(`http://${device.ip}/rpc`,{method:'POST',headers,body:JSON.stringify({id:1,method:'Switch.GetStatus',params:{id:i}})});
+if(r.ok){const rd=await r.json();if(device.relaysState[i]){device.relaysState[i].state=rd.result.output;device.relaysState[i].power=rd.result.apower||0}}
+}catch(e){}
+}
+}else{
+const auth=device.user?`${device.user}:${device.pass}@`:'';
+const resp=await fetch(`http://${auth}${device.ip}/status`);
+if(resp.ok){
+const data=await resp.json();
+if(data.relays){data.relays.forEach((r,i)=>{if(device.relaysState[i]){device.relaysState[i].state=r.ison;device.relaysState[i].power=r.power||0}})}
+}
+}
+if(dot)dot.className='shelly-status-dot';
+if(statusText)statusText.textContent='En línea';
+saveDB();renderShellyDevices();
+}catch(e){
+if(dot)dot.className='shelly-status-dot off';
+if(statusText)statusText.textContent='Sin conexión';
+}
+}
 
-        function sendInsumosWhatsApp() {
-            if (selectedInsumos.size === 0) {
-                showNotification('⚠️ Selecciona al menos un insumo');
-                return;
-            }
-            let message = ` *PTAR SIY - YERUKIM*\n📦 *SOLICITUD DE INSUMOS*\n📅 ${new Date().toLocaleDateString('es-MX')}\n🕐 ${new Date().toLocaleTimeString('es-MX')}\n\n`;
-            message += `Se solicitan los siguientes insumos:\n\n`;
-            let count = 1;
-            insumos.forEach(ins => {
-                if (selectedInsumos.has(ins.id)) {
-                    message += `${count}. *${ins.text}*`;
-                    if (ins.note) message += `\n   _${ins.note}_`;
-                    message += `\n\n`;
-                    count++;
-                }
-            });
-            message += `━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `📊 Total de insumos solicitados: *${selectedInsumos.size}*\n`;
-            message += `🌿 *SIY Soluciones Integrales Yerukim*`;
-            document.getElementById('whatsappMessage').value = message;
-            document.getElementById('whatsappModal').classList.add('active');
-        }
+function deleteShellyDevice(id){
+if(!confirm('¿Eliminar este dispositivo?'))return;
+db.shelly=db.shelly.filter(d=>d.id!==id);
+saveDB();renderShellyDevices();
+showNotification('🗑️ Dispositivo eliminado');
+}
 
-        function sendAllWhatsApp() {
-            let message = ` *PTAR SIY - YERUKIM*\n📋 *REPORTE DE ACTIVIDADES*\n📅 ${new Date().toLocaleDateString('es-MX')}\n🕐 ${new Date().toLocaleTimeString('es-MX')}\n\n`;
-            if (activityLog.length === 0) message += `⚠️ Sin actividades registradas hoy.\n\n`;
-            else {
-                processes.forEach(proc => {
-                    const procActions = activityLog.filter(a => a.process === proc.number);
-                    if (procActions.length > 0) {
-                        message += `━━━ *${proc.number}: ${proc.title}* ━━━\n`;
-                        procActions.forEach(a => { message += `${a.type === 'Operación' ? '⚡' : '🔧'} [${a.time}] ${a.action}\n`; });
-                        message += `\n`;
-                    }
-                });
-            }
-            if (selectedInsumos.size > 0) {
-                message += `📦 *INSUMOS SOLICITADOS (${selectedInsumos.size}):*\n`;
-                insumos.forEach(ins => { if (selectedInsumos.has(ins.id)) message += `☑️ ${ins.text}\n`; });
-                message += `\n`;
-            }
-            message += ` *Resumen:*\n✅ Total acciones: ${activityLog.length}\n⚡ Operaciones: ${opCount}\n🔧 Mantenimientos: ${mantCount}\n📦 Insumos: ${selectedInsumos.size}`;
-            document.getElementById('whatsappMessage').value = message;
-            document.getElementById('whatsappModal').classList.add('active');
-        }
+async function allShellyOn(){
+if(!confirm('¿Encender TODOS los relays?'))return;
+for(const device of db.shelly){for(let i=0;i<device.relays;i++){await toggleShellyRelay(device.id,i);await new Promise(r=>setTimeout(r,300))}}
+showNotification('🟢 Todos los dispositivos encendidos');
+}
 
-        function confirmWhatsApp() {
-            const number = document.getElementById('whatsappNumber').value.trim();
-            const message = document.getElementById('whatsappMessage').value;
-            if (!message) { showNotification('️ No hay mensaje'); return; }
-            const encodedMessage = encodeURIComponent(message);
-            const url = number ? `https://wa.me/${number}?text=${encodedMessage}` : `https://wa.me/?text=${encodedMessage}`;
-            window.open(url, '_blank');
-            closeModal();
-            showNotification(' Abriendo WhatsApp...');
-        }
+async function allShellyOff(){
+if(!confirm('¿Apagar TODOS los relays?'))return;
+for(const device of db.shelly){for(let i=0;i<device.relays;i++){await toggleShellyRelay(device.id,i);await new Promise(r=>setTimeout(r,300))}}
+showNotification('🔴 Todos los dispositivos apagados');
+}
 
-        function closeModal() { document.getElementById('whatsappModal').classList.remove('active'); }
+async function refreshAllShelly(){
+showNotification('🔄 Actualizando todos...');
+for(const device of db.shelly){await refreshShellyDevice(device.id);await new Promise(r=>setTimeout(r,500))}
+}
 
-        function showNotification(text) {
-            const notif = document.getElementById('notification');
-            notif.textContent = text;
-            notif.classList.add('show');
-            setTimeout(() => notif.classList.remove('show'), 2500);
-        }
+function showSchedule(){
+const hora=prompt('¿A qué hora ejecutar? (HH:MM, ej: 08:00)');
+if(!hora)return;
+const accion=prompt('¿Qué acción? (on/off)');
+if(!accion)return;
+showNotification(`⏰ Programado: ${accion.toUpperCase()} a las ${hora}`);
+logShellyCommand('Programador','Automático',`${accion} @ ${hora}`,'⏰ Programado');
+}
 
-        document.getElementById('whatsappModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+function logShellyCommand(device,relay,action,status){
+const now=new Date();
+db.shellyLog.push({time:now.toLocaleTimeString('es-MX'),date:now.toLocaleDateString('es-MX'),device,relay,action,status});
+if(db.shellyLog.length>50)db.shellyLog=db.shellyLog.slice(-50);
+saveDB();renderShellyLog();
+}
 
-        renderProcesses();
-        renderInsumos();
-    </script>
+function renderShellyLog(){
+const cont=document.getElementById('shellyLog');
+if(!cont)return;
+if(db.shellyLog.length===0){cont.innerHTML='<div class="alert alert-info">ℹ️ Sin comandos ejecutados.</div>';return}
+cont.innerHTML=db.shellyLog.slice(-10).reverse().map(l=>`<div class="log-entry"><div class="log-time">🕐 ${l.time} - ${l.date}</div><div class="log-text"><strong>${l.device}</strong> → ${l.relay}: ${l.action} <span style="opacity:0.7">(${l.status})</span></div></div>`).join('');
+}
 
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .catch(err => console.warn('Service Worker:', err));
-            });
-        }
-    </script>
+function clearShellyLog(){
+if(!confirm('¿Limpiar historial de comandos Shelly?'))return;
+db.shellyLog=[];saveDB();renderShellyLog();
+showNotification('🗑️ Historial limpiado');
+}
+
+async function scanNetwork(){
+showNotification('🔍 Escaneando red local...');
+const baseIP=window.location.hostname||'192.168.1';
+const base=baseIP.split('.').slice(0,3).join('.');
+let found=0;
+for(let i=1;i<=20;i++){
+try{
+const ctrl=new AbortController();
+setTimeout(()=>ctrl.abort(),800);
+const resp=await fetch(`http://${base}.${i}/shelly`,{signal:ctrl.signal});
+if(resp.ok){found++;showNotification(`✅ Encontrado Shelly en ${base}.${i}`)}
+}catch(e){}
+}
+if(found===0)showNotification('⚠️ No se encontraron Shelly. Agrega manualmente.');
+}
+
+// ============ RESTO DE MÓDULOS ============
+function registrarCaudal(){const e=parseFloat(document.getElementById('caudalEntrada').value);const s=parseFloat(document.getElementById('caudalSalida').value);const o=document.getElementById('caudalObs').value;if(isNaN(e)||isNaN(s)){showNotification('⚠️ Ingresa ambos caudales');return}const now=new Date();db.caudales.push({time:now.toLocaleTimeString('es-MX'),date:now.toLocaleDateString('es-MX'),entrada:e,salida:s,obs:o});saveDB();document.getElementById('caudalEntrada').value='';document.getElementById('caudalSalida').value='';document.getElementById('caudalObs').value='';showNotification('✅ Caudal registrado')}
+
+function registrarParametros(){const ph=parseFloat(document.getElementById('paramPH').value);const temp=parseFloat(document.getElementById('paramTemp').value);const od=parseFloat(document.getElementById('paramOD').value);const cond=parseFloat(document.getElementById('paramCond').value);const ss=parseFloat(document.getElementById('paramSS').value);const dbo=parseFloat(document.getElementById('paramDBO').value);const dqo=parseFloat(document.getElementById('paramDQO').value);if(isNaN(ph)){showNotification('⚠️ Ingresa al menos el pH');return}const now=new Date();db.parametros.push({time:now.toLocaleTimeString('es-MX'),date:now.toLocaleDateString('es-MX'),ph,temp,od,cond,ss,dbo,dqo});saveDB();['paramPH','paramTemp','paramOD','paramCond','paramSS','paramDBO','paramDQO'].forEach(id=>document.getElementById(id).value='');showNotification('✅ Parámetros registrados');verificarAlertas()}
+
+function verificarAlertas(){const cont=document.getElementById('alertasContainer');const regs=db.parametros;if(regs.length===0){cont.innerHTML='<div class="alert alert-info">ℹ️ Sin registros.</div>';return}const last=regs[regs.length-1];let alerts=[];if(last.ph<LIMITS.pH.min||last.ph>LIMITS.pH.max)alerts.push({t:'danger',m:`⚠️ pH fuera de rango: ${last.ph}`});if(last.od&&last.od<LIMITS.OD.min)alerts.push({t:'warning',m:`⚠️ OD bajo: ${last.od} mg/L`});if(last.temp&&last.temp>LIMITS.Temp.max)alerts.push({t:'warning',m:`⚠️ Temperatura alta: ${last.temp}°C`});if(last.cond&&last.cond>LIMITS.Cond.max)alerts.push({t:'warning',m:`⚠️ Conductividad alta: ${last.cond}`});if(last.ss&&last.ss>LIMITS.SS.max)alerts.push({t:'danger',m:`🚨 SST excedidos: ${last.ss} mg/L`});if(last.dbo&&last.dbo>LIMITS.DBO.max)alerts.push({t:'danger',m:`🚨 DBO5 excedida: ${last.dbo}`});if(last.dqo&&last.dqo>LIMITS.DQO.max)alerts.push({t:'danger',m:`🚨 DQO excedida: ${last.dqo}`});if(alerts.length===0)cont.innerHTML='<div class="alert alert-success">✅ Todos los parámetros dentro de límites.</div>';else cont.innerHTML=alerts.map(a=>`<div class="alert alert-${a.t}">${a.m}</div>`).join('')}
+
+function actualizarEstadoUnidad(){const u=document.getElementById('unidadSelect').value;const e=document.getElementById('estadoSelect').value;db.unidades[u]=e;saveDB();const map={reactor:'estadoReactor',clar1:'estadoClar1',clar2:'estadoClar2',lodos:'estadoLodos'};const colors={ok:'color:#4ade80',warn:'color:#fbbf24',error:'color:#ef4444'};const symbols={ok:'●',warn:'◐',error:'○'};const el=document.getElementById(map[u]);el.style.cssText='font-size:1.5em;font-weight:700;'+colors[e];el.textContent=symbols[e];showNotification('✅ Estado actualizado')}
+
+function updateNivel(id,val){document.getElementById('nivelVal'+id).textContent=val+'%'}
+function guardarNiveles(){db.niveles={1:parseInt(document.getElementById('nivelTanque1').value),2:parseInt(document.getElementById('nivelTanque2').value),3:parseInt(document.getElementById('nivelTanque3').value),B:parseInt(document.getElementById('nivelTanqueB').value)};saveDB();showNotification('✅ Niveles guardados')}
+
+function agendarMantenimiento(){const eq=document.getElementById('mantEquipo').value;const t=document.getElementById('mantTipo').value;const f=document.getElementById('mantFecha').value;const d=document.getElementById('mantDesc').value;if(!f){showNotification('⚠️ Selecciona fecha');return}db.mantenimientos.push({eq,tipo:t,fecha:f,desc:d,status:'pendiente'});saveDB();renderMantenimientos();document.getElementById('mantDesc').value='';document.getElementById('mantFecha').value='';showNotification('📅 Mantenimiento agendado')}
+
+function renderMantenimientos(){const cont=document.getElementById('mantenimientosList');if(!cont)return;if(db.mantenimientos.length===0){cont.innerHTML='<div class="alert alert-info">ℹ️ Sin mantenimientos.</div>';return}cont.innerHTML=db.mantenimientos.slice(-5).reverse().map(m=>`<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;border-left:4px solid #fbbf24"><div style="font-size:0.85em"><strong>${m.eq}</strong><br><small>${m.tipo} - ${m.fecha}</small><br><small>${m.desc}</small></div></div>`).join('')}
+
+function agregarInventario(){const n=document.getElementById('invNombre').value;const s=parseInt(document.getElementById('invStock').value);const m=parseInt(document.getElementById('invMin').value);const u=document.getElementById('invUbic').value;if(!n||isNaN(s)){showNotification('⚠️ Completa nombre y stock');return}db.inventario.push({nombre:n,stock:s,min:m,ubic:u});saveDB();renderInventario();['invNombre','invStock','invMin','invUbic'].forEach(id=>document.getElementById(id).value='');showNotification('📦 Agregado')}
+
+function renderInventario(){const cont=document.getElementById('inventarioList');if(!cont)return;if(db.inventario.length===0){cont.innerHTML='<div class="alert alert-info">ℹ️ Inventario vacío.</div>';return}cont.innerHTML=db.inventario.map(i=>{let cls='';if(i.stock<=i.min)cls='low';return`<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;display:flex;justify-content:space-between;align-items:center"><div style="font-size:0.85em"><strong>${i.nombre}</strong><br><small>${i.ubic||'-'}</small></div><div style="font-size:0.9em;font-weight:700;color:${i.stock<=i.min?'#ef4444':'#4ade80'}">${i.stock}${i.stock<=i.min?' ⚠️':''}</div></div>`}).join('')}
+
+function generarReporte(){const tipo=document.getElementById('reporteTipo').value;const fecha=document.getElementById('reporteFecha').value;const fmt=document.getElementById('reporteFormato').value;if(!fecha){showNotification('⚠️ Selecciona fecha');return}const now=new Date();const reporte={time:now.toLocaleTimeString('es-MX'),date:now.toLocaleDateString('es-MX'),tipo,fecha,fmt};db.reportes.push(reporte);saveDB();renderReportes();if(fmt==='whatsapp'){let msg=`🌊 *PTAR SIY*\n📊 *REPORTE ${tipo.toUpperCase()}*\n📅 ${fecha}\n\n*SIY Soluciones Integrales Yerukim*`;document.getElementById('whatsappMessage').value=msg;document.getElementById('whatsappModal').classList.add('active')}else{showNotification(`✅ Reporte ${fmt.toUpperCase()} generado`)}}
+
+function renderReportes(){const cont=document.getElementById('reportesList');if(!cont)return;if(db.reportes.length===0){cont.innerHTML='<div class="alert alert-info">ℹ️ Sin reportes.</div>';return}cont.innerHTML=db.reportes.slice(-5).reverse().map(r=>`<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0"><div style="font-size:0.85em"><strong>Reporte ${r.tipo}</strong><br><small>${r.date} ${r.time} • ${r.fmt.toUpperCase()}</small></div></div>`).join('')}
+
+function verificarCumplimiento(){if(db.parametros.length===0){showNotification('⚠️ Sin datos');return}const last=db.parametros[db.parametros.length-1];const check=(v,lim)=>{if(v===undefined)return'⚠️';if(lim.min!==undefined&&lim.max!==undefined)return(v>=lim.min&&v<=lim.max)?'✓ Cumple':'✗ No cumple';if(lim.min!==undefined)return v>=lim.min?'✓ Cumple':'✗ No cumple';if(lim.max!==undefined)return v<=lim.max?'✓ Cumple':'✗ No cumple';return'✓'};const setNorma=(id,val)=>{const el=document.getElementById(id);el.textContent=val;el.style.color=val.includes('✓')?'#4ade80':'#ef4444'};setNorma('normaDBO',check(last.dbo,LIMITS.DBO));setNorma('normaDQO',check(last.dqo,LIMITS.DQO));setNorma('normaSST',check(last.ss,LIMITS.SS));setNorma('normaPH',check(last.ph,LIMITS.pH));showNotification('✅ Cumplimiento verificado')}
+
+function registrarEnergia(){const ant=parseFloat(document.getElementById('energiaAnt').value);const act=parseFloat(document.getElementById('energiaAct').value);const per=document.getElementById('energiaPeriodo').value;const costo=parseFloat(document.getElementById('energiaCosto').value)||0;if(isNaN(ant)||isNaN(act)){showNotification('⚠️ Ingresa ambas lecturas');return}const consumo=act-ant;const total=consumo*costo;const now=new Date();db.energia.push({time:now.toLocaleTimeString('es-MX'),date:now.toLocaleDateString('es-MX'),ant,act,consumo,periodo:per,costoUnit:costo,total});saveDB();document.getElementById('energiaAnt').value='';document.getElementById('energiaAct').value='';document.getElementById('energiaResumen').innerHTML=`<div class="alert alert-success">✅ Consumo: <strong>${consumo.toFixed(2)} kWh</strong> | Costo: <strong>$${total.toFixed(2)}</strong></div>`;showNotification('⚡ Consumo registrado')}
+
+function agregarQuimico(){const n=document.getElementById('quimNombre').value;const s=parseFloat(document.getElementById('quimStock').value);const u=document.getElementById('quimUnidad').value;const m=parseFloat(document.getElementById('quimMin').value);if(!n||isNaN(s)){showNotification('⚠️ Completa nombre y stock');return}db.quimicos.push({nombre:n,stock:s,unid:u,min:m});saveDB();renderQuimicos();['quimNombre','quimStock','quimMin'].forEach(id=>document.getElementById(id).value='');showNotification('🧪 Insumo agregado')}
+
+function renderQuimicos(){const cont=document.getElementById('quimicosList');if(!cont)return;if(db.quimicos.length===0){cont.innerHTML='<div class="alert alert-info">ℹ️ Sin insumos.</div>';return}cont.innerHTML=db.quimicos.map(q=>`<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;display:flex;justify-content:space-between;align-items:center"><div style="font-size:0.85em"><strong>${q.nombre}</strong><br><small>${q.unid} | Mín: ${q.min}</small></div><div style="font-size:0.9em;font-weight:700;color:${q.stock<=q.min?'#ef4444':'#4ade80'}">${q.stock}${q.stock<=q.min?' ⚠️':''}</div></div>`).join('')}
+
+function renderProcesses(){const cont=document.getElementById('processContainer');cont.innerHTML='';processes.forEach(proc=>{const card=document.createElement('div');card.className='card';card.id=`proc-${proc.id}`;let html=`<div class="card-header" onclick="toggleCardById('proc-${proc.id}')"><div class="card-icon">${proc.icon}</div><div class="card-info"><div class="card-number">${proc.number}</div><div class="card-title">${proc.title}</div></div><div class="card-arrow">▼</div></div><div class="card-content"><div class="card-inner">`;if(proc.operations.length>0){html+=`<div class="section-title op">⚡ Operación</div>`;proc.operations.forEach((op,idx)=>{html+=`<button class="process-item op" onclick="registerAction(${proc.id},'Operación','${op.replace(/'/g,"\\'")}',this)"><span class="p-icon">▶️</span><span class="p-text">${op}</span><span class="p-time" id="time-${proc.id}-op-${idx}">--:--</span></button>`})}if(proc.maintenance.length>0){html+=`<div class="section-title mant">🔧 Mantenimiento</div>`;proc.maintenance.forEach((mant,idx)=>{html+=`<button class="process-item mant" onclick="registerAction(${proc.id},'Mantenimiento','${mant.replace(/'/g,"\\'")}',this)"><span class="p-icon">🔧</span><span class="p-text">${mant}</span><span class="p-time" id="time-${proc.id}-mant-${idx}">--:--</span></button>`})}html+=`<button class="btn btn-whatsapp" onclick="sendProcessWhatsApp(${proc.id})">📱 Enviar Proceso ${proc.id}</button></div></div>`;card.innerHTML=html;cont.appendChild(card)})}
+
+function renderInsumos(){const cont=document.getElementById('insumosList');cont.innerHTML='';document.getElementById('insumosTotal').textContent=insumos.length;insumos.forEach(ins=>{const btn=document.createElement('button');btn.className='insumo-item';btn.id=`insumo-${ins.id}`;btn.onclick=()=>toggleInsumo(ins.id);let html=`<div class="insumo-checkbox" id="check-${ins.id}"></div><div class="insumo-text">${ins.text}`;if(ins.note)html+=`<span class="insumo-note">${ins.note}</span>`;html+=`</div>`;btn.innerHTML=html;cont.appendChild(btn)})}
+
+function toggleInsumo(id){const btn=document.getElementById(`insumo-${id}`);const check=document.getElementById(`check-${id}`);if(selectedInsumos.has(id)){selectedInsumos.delete(id);btn.classList.remove('selected');check.textContent=''}else{selectedInsumos.add(id);btn.classList.add('selected');check.textContent='✓'}document.getElementById('insumosCount').textContent=selectedInsumos.size}
+
+function toggleSelectAll(){if(selectedInsumos.size===insumos.length){insumos.forEach(ins=>{selectedInsumos.delete(ins.id);document.getElementById(`insumo-${ins.id}`).classList.remove('selected');document.getElementById(`check-${ins.id}`).textContent=''})}else{insumos.forEach(ins=>{selectedInsumos.add(ins.id);document.getElementById(`insumo-${ins.id}`).classList.add('selected');document.getElementById(`check-${ins.id}`).textContent='✓'})}document.getElementById('insumosCount').textContent=selectedInsumos.size}
+
+function registerAction(procId,type,action,btnElement){const now=new Date();const timeStr=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;const dateStr=now.toLocaleDateString('es-MX');btnElement.querySelectorAll('.p-time').forEach(el=>el.textContent=timeStr);const proc=processes.find(p=>p.id===procId);activityLog.push({time:timeStr,date:dateStr,process:proc.number,type,action});if(type==='Operación')opCount++;else mantCount++;updateStats();renderLog();showNotification(`✅ ${type} registrada: ${timeStr}`);btnElement.style.background=type==='Operación'?'rgba(96,165,250,0.4)':'rgba(251,191,36,0.4)';setTimeout(()=>{btnElement.style.background=''},1500)}
+
+function updateStats(){document.getElementById('finishOps').textContent=opCount;document.getElementById('finishMant').textContent=mantCount;document.getElementById('finishInsumos').textContent=selectedInsumos.size;document.getElementById('finishTotal').textContent=activityLog.length+selectedInsumos.size}
+
+function renderLog(){const cont=document.getElementById('logEntries');cont.innerHTML='';[...activityLog].reverse().forEach(entry=>{const div=document.createElement('div');div.className='log-entry';div.innerHTML=`<div class="log-time">🕐 ${entry.time} - ${entry.date}</div><div class="log-text"><strong>${entry.process}</strong> | ${entry.type}: ${entry.action}</div>`;cont.appendChild(div)})}
+
+function clearLog(){if(confirm('¿Limpiar registro?')){activityLog=[];opCount=0;mantCount=0;selectedInsumos.clear();insumos.forEach(ins=>{const btn=document.getElementById(`insumo-${ins.id}`);if(btn){btn.classList.remove('selected');document.getElementById(`check-${ins.id}`).textContent=''}});document.getElementById('insumosCount').textContent='0';updateStats();renderLog();showNotification('🗑️ Registro limpiado')}}
+
+function sendProcessWhatsApp(procId){const proc=processes.find(p=>p.id===procId);const procActions=activityLog.filter(a=>a.process===proc.number);let msg=`🌊 *PTAR SIY*\n📋 *${proc.number}: ${proc.title}*\n📅 ${new Date().toLocaleDateString('es-MX')}\n\n`;if(procActions.length===0)msg+='⚠️ Sin actividades.';else procActions.forEach(a=>{msg+=`${a.type==='Operación'?'⚡':'🔧'} [${a.time}] ${a.action}\n`});msg+=`\n📊 Total: ${procActions.length}`;document.getElementById('whatsappMessage').value=msg;document.getElementById('whatsappModal').classList.add('active')}
+
+function sendFinishWhatsApp(){if(activityLog.length===0&&selectedInsumos.size===0){showNotification('⚠️ Sin actividades');return}let msg=`🌊 *PTAR SIY*\n🏁 *FIN DE JORNADA*\n📅 ${new Date().toLocaleDateString('es-MX')}\n🕐 ${new Date().toLocaleTimeString('es-MX')}\n\n━━━━━━━━━━━━━━━\n📊 *RESUMEN*\n⚡ Operaciones: ${opCount}\n🔧 Mantenimientos: ${mantCount}\n📦 Insumos: ${selectedInsumos.size}\n✅ *TOTAL: ${activityLog.length+selectedInsumos.size}*\n━━━━━━━━━━━━━━━\n\n`;if(activityLog.length>0){msg+='📋 *ACTIVIDADES:*\n\n';processes.forEach(proc=>{const pa=activityLog.filter(a=>a.process===proc.number);if(pa.length>0){msg+=`🔹 *${proc.number}: ${proc.title}*\n`;pa.forEach(a=>{msg+=`   ${a.type==='Operación'?'⚡':'🔧'} [${a.time}] ${a.action}\n`});msg+='\n'}})}if(selectedInsumos.size>0){msg+='📦 *INSUMOS:*\n\n';insumos.forEach(ins=>{if(selectedInsumos.has(ins.id)){msg+=`☑️ ${ins.text}`;if(ins.note)msg+=` _(${ins.note})_`;msg+='\n'}})}msg+='\n━━━━━━━━━━━━━━━\n🌿 *SIY Soluciones Integrales Yerukim*';document.getElementById('whatsappMessage').value=msg;document.getElementById('whatsappModal').classList.add('active')}
+
+function sendInsumosWhatsApp(){if(selectedInsumos.size===0){showNotification('⚠️ Selecciona insumos');return}let msg=`🌊 *PTAR SIY*\n📦 *SOLICITUD DE INSUMOS*\n📅 ${new Date().toLocaleDateString('es-MX')}\n🕐 ${new Date().toLocaleTimeString('es-MX')}\n\nSe solicitan:\n\n`;let c=1;insumos.forEach(ins=>{if(selectedInsumos.has(ins.id)){msg+=`${c}. *${ins.text}*`;if(ins.note)msg+=`\n   _${ins.note}_`;msg+='\n\n';c++}});msg+=`━━━━━━━━━━━━━━━\n📊 Total: *${selectedInsumos.size}*\n🌿 *SIY Soluciones Integrales Yerukim*`;document.getElementById('whatsappMessage').value=msg;document.getElementById('whatsappModal').classList.add('active')}
+
+function sendAllWhatsApp(){let msg=`🌊 *PTAR SIY*\n📋 *REPORTE COMPLETO*\n📅 ${new Date().toLocaleDateString('es-MX')}\n🕐 ${new Date().toLocaleTimeString('es-MX')}\n\n`;if(activityLog.length>0){processes.forEach(proc=>{const pa=activityLog.filter(a=>a.process===proc.number);if(pa.length>0){msg+=`━━━ *${proc.number}: ${proc.title}* ━━\n`;pa.forEach(a=>{msg+=`${a.type==='Operación'?'⚡':'🔧'} [${a.time}] ${a.action}\n`});msg+='\n'}})}if(selectedInsumos.size>0){msg+=`📦 *INSUMOS (${selectedInsumos.size}):*\n`;insumos.forEach(ins=>{if(selectedInsumos.has(ins.id))msg+=`☑️ ${ins.text}\n`});msg+='\n'}msg+=`📊 *Resumen:*\n✅ Acciones: ${activityLog.length}\n⚡ Operaciones: ${opCount}\n🔧 Mantenimientos: ${mantCount}\n📦 Insumos: ${selectedInsumos.size}`;document.getElementById('whatsappMessage').value=msg;document.getElementById('whatsappModal').classList.add('active')}
+
+function confirmWhatsApp(){const number=document.getElementById('whatsappNumber').value.trim();const message=document.getElementById('whatsappMessage').value;if(!message){showNotification('⚠️ Sin mensaje');return}const encoded=encodeURIComponent(message);const url=number?`https://wa.me/${number}?text=${encoded}`:`https://wa.me/?text=${encoded}`;const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';document.body.appendChild(link);link.click();document.body.removeChild(link);closeModal();showNotification('📤 Abriendo WhatsApp...')}
+
+function closeModal(){document.getElementById('whatsappModal').classList.remove('active')}
+
+function showNotification(text){const n=document.getElementById('notification');n.textContent=text;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),2500)}
+
+document.getElementById('whatsappModal').addEventListener('click',function(e){if(e.target===this)closeModal()})
+
+function adjustHeight(){document.body.style.minHeight=window.innerHeight+'px'}
+window.addEventListener('resize',adjustHeight);
+window.addEventListener('orientationchange',()=>setTimeout(adjustHeight,100));
+
+// INIT
+loadDB();
+renderProcesses();
+renderInsumos();
+renderShellyDevices();
+renderShellyLog();
+renderMantenimientos();
+renderInventario();
+renderQuimicos();
+renderReportes();
+updateStats();
+adjustHeight();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+ window.addEventListener('load', function () {
+  navigator.serviceWorker.register('./service-worker.js')
+   .catch(function (err) { console.warn('No se pudo registrar el service worker:', err); });
+ });
+}
+</script>
 
 </body>
 </html>
